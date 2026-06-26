@@ -1,0 +1,2334 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>CoffeeTI · 你的咖啡口味人格 | Coffee Jam</title>
+<meta name="description" content="一份关于品味与生活方式的咖啡小测。Coffee Jam 出品的前瞻版。" />
+<meta property="og:title" content="CoffeeTI · 你的咖啡口味人格" />
+<meta property="og:description" content="测出你是哪一种喝咖啡的人。来自 Coffee Jam。" />
+<meta property="og:type" content="website" />
+<meta name="theme-color" content="#F5F0E8" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#F5F0E8; --ink:#2C1810;
+    --ink-soft:rgba(44,24,16,.60); --ink-faint:rgba(44,24,16,.34);
+    --accent:#C4783A; --line:rgba(44,24,16,.13); --card:rgba(44,24,16,.025);
+    --serif:"Playfair Display","Noto Serif SC","Songti SC","STSong","SimSun",serif;
+    --sans:"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,-apple-system,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:300;-webkit-font-smoothing:antialiased}
+  body{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:max(6vh,28px) 7vw;overflow-x:hidden}
+  .stage{width:100%;max-width:660px;margin:auto}
+  .fade{animation:fade .55s cubic-bezier(.2,.8,.2,1)}
+  @keyframes fade{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+  .eyebrow{font-weight:500;letter-spacing:.26em;text-transform:uppercase;font-size:.7rem;color:var(--ink-soft)}
+  h1{font-family:var(--serif);font-weight:700;font-size:clamp(2.6rem,9vw,4.2rem);line-height:1.06;letter-spacing:-.01em}
+  h2{font-family:var(--serif);font-weight:600;font-size:clamp(1.5rem,5vw,2.2rem);line-height:1.28}
+  .lede{font-family:var(--serif);font-style:italic;font-size:clamp(1.05rem,3vw,1.4rem);color:var(--ink-soft);line-height:1.5}
+  p{font-size:1rem;line-height:1.8;color:var(--ink)}
+  .muted{color:var(--ink-soft)} .faint{color:var(--ink-faint);font-size:.82rem;letter-spacing:.02em;line-height:1.7}
+  .mt1{margin-top:1rem}.mt2{margin-top:1.8rem}.mt3{margin-top:2.8rem}.mt4{margin-top:4rem}
+  .num{color:var(--accent);font-family:var(--serif);font-weight:700;font-variant-numeric:tabular-nums}
+  /* buttons */
+  .cta{display:inline-block;background:var(--accent);color:var(--bg);font-family:var(--sans);font-weight:500;
+    letter-spacing:.04em;font-size:1.02rem;padding:.95rem 2.6rem;border-radius:999px;border:none;cursor:pointer;text-decoration:none}
+  .cta:active{transform:translateY(1px)}
+  .cta:disabled{opacity:.5;cursor:default}
+  .ghost{background:none;border:1px solid var(--line);color:var(--ink-soft);font-family:var(--sans);font-weight:400;
+    font-size:.92rem;padding:.7rem 1.6rem;border-radius:999px;cursor:pointer}
+  .ghost:hover{border-color:var(--ink-soft)}
+  /* quiz options */
+  .opt{display:block;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:1.3rem 1.5rem;margin-top:1rem;cursor:pointer;font-family:var(--sans);font-size:1.06rem;font-weight:400;color:var(--ink);
+    line-height:1.5;transition:border-color .2s,background .2s,transform .15s}
+  .opt:hover{border-color:var(--accent);background:rgba(196,120,58,.05)}
+  .opt:active{transform:scale(.99)}
+  .opt.soft{font-size:.98rem;color:var(--ink-soft);background:none}
+  .opt.soft:hover{color:var(--ink)}
+  /* role + depth setup */
+  .roles{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1rem}
+  .chip2{background:none;border:1px solid var(--line);border-radius:999px;padding:.7rem 1.1rem;cursor:pointer;
+    font-family:var(--sans);font-size:.95rem;color:var(--ink-soft);transition:border-color .2s,color .2s,background .2s;text-align:left}
+  .chip2 b{font-weight:500;color:var(--ink)}
+  .chip2 .h{display:block;font-size:.74rem;color:var(--ink-faint);margin-top:.15rem;letter-spacing:.01em}
+  .chip2.on{border-color:var(--accent);background:rgba(196,120,58,.06)}
+  .chip2.on b,.chip2.on .h{color:var(--accent)}
+  .seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;margin-top:1rem;flex-wrap:wrap}
+  .seg button{background:none;border:none;padding:.7rem 1.5rem;cursor:pointer;font-family:var(--sans);font-size:.95rem;color:var(--ink-soft)}
+  .seg button.on{background:var(--ink);color:var(--bg)}
+  .label-sm{font-family:var(--serif);font-style:italic;color:var(--ink-faint);font-size:.9rem;margin-top:2rem}
+  /* progress */
+  .prog{display:flex;gap:5px;margin-bottom:2.4rem;flex-wrap:wrap}
+  .prog i{flex:1;min-width:6px;height:2px;background:var(--line);border-radius:2px}
+  .prog i.on{background:var(--ink)}
+  .qcount{font-family:var(--serif);color:var(--ink-faint);font-size:.85rem;margin-bottom:1rem;font-variant-numeric:tabular-nums}
+  .qtier{font-family:var(--serif);font-style:italic;color:var(--ink-faint);font-size:.78rem;margin-left:.6rem}
+  /* result */
+  .code{font-family:var(--serif);font-weight:700;letter-spacing:.34em;color:var(--accent);font-size:1.1rem}
+  .subtype{font-family:var(--serif);font-style:italic;color:var(--ink-soft);font-size:1rem;margin-top:.8rem}
+  .axes{margin:2.4rem 0 1rem}
+  .axis{margin-bottom:1.4rem}
+  .axis .lab{display:flex;justify-content:space-between;font-size:.78rem;color:var(--ink-soft);margin-bottom:.5rem;font-family:var(--serif)}
+  .axis .lab .pick{color:var(--ink)}
+  .track{position:relative;height:1px;background:var(--line)}
+  .track .dot{position:absolute;top:50%;width:9px;height:9px;border-radius:50%;background:var(--accent);transform:translate(-50%,-50%);transition:left .8s cubic-bezier(.2,.8,.2,1)}
+  .rec{border-top:1px solid var(--line);padding-top:1.5rem;margin-top:1.5rem}
+  .rec .kind{font-family:var(--serif);font-style:italic;color:var(--ink-faint);font-size:.82rem}
+  .rec h3{font-family:var(--serif);font-weight:600;font-size:1.22rem;margin-top:.3rem;line-height:1.35}
+  .rec .desc{color:var(--ink-soft);font-size:.95rem;line-height:1.7;margin-top:.5rem}
+  .nav-link{margin-top:1rem;display:inline-flex;align-items:center;gap:.4rem;color:var(--accent);background:none;border:none;
+    font-family:var(--sans);font-weight:500;font-size:.95rem;cursor:pointer;padding:0;text-align:left}
+  .nav-link:hover{text-decoration:underline}
+  .quiet-links{display:flex;flex-wrap:wrap;gap:1.4rem;margin-top:1.8rem}
+  .quiet{color:var(--ink-soft);background:none;border:none;font-family:var(--sans);font-size:.88rem;cursor:pointer;padding:0;border-bottom:1px solid var(--line)}
+  .quiet:hover{color:var(--ink)}
+  .placeholder-tag{display:inline-block;font-size:.66rem;letter-spacing:.1em;color:var(--ink-faint);border:1px solid var(--line);border-radius:999px;padding:.15rem .55rem;margin-left:.4rem;vertical-align:middle}
+  .wl{border-top:1px solid var(--line);margin-top:2.2rem;padding-top:2rem}
+  .wl-row{display:flex;gap:.6rem;margin-top:1rem;flex-wrap:wrap}
+  .wl input{flex:1;min-width:200px;background:none;border:1px solid var(--line);border-radius:999px;padding:.8rem 1.3rem;font-family:var(--sans);font-size:.95rem;color:var(--ink)}
+  .wl input:focus{outline:none;border-color:var(--accent)}
+  .actions{display:flex;gap:.8rem;flex-wrap:wrap;margin-top:2.4rem}
+  /* catalog / browse */
+  .crumb{display:flex;gap:.5rem;align-items:center;font-size:.8rem;color:var(--ink-faint);margin-bottom:1.4rem;flex-wrap:wrap}
+  .crumb button{background:none;border:none;color:var(--ink-soft);cursor:pointer;font-family:var(--sans);font-size:.8rem;padding:0;border-bottom:1px solid var(--line)}
+  .crumb button:hover{color:var(--ink)}
+  .list{margin-top:1.4rem}
+  .item{border-top:1px solid var(--line);padding:1.3rem 0}
+  .item:last-child{border-bottom:1px solid var(--line)}
+  .item .nm{font-family:var(--serif);font-weight:600;font-size:1.12rem;line-height:1.35}
+  .item .note{color:var(--ink-soft);font-size:.92rem;line-height:1.7;margin-top:.4rem}
+  .item .meta{display:flex;gap:1.2rem;align-items:center;margin-top:.7rem;flex-wrap:wrap}
+  .tag-link{color:var(--ink-soft);background:none;border:none;font-family:var(--sans);font-size:.85rem;cursor:pointer;padding:0;border-bottom:1px solid var(--line)}
+  .tag-link:hover{color:var(--ink)}
+  .roaster-beans{margin-top:1.6rem}
+  .disclaimer{border:1px solid var(--line);border-radius:12px;padding:1rem 1.2rem;margin-top:1.6rem;color:var(--ink-faint);font-size:.8rem;line-height:1.7}
+  /* stats */
+  table{width:100%;border-collapse:collapse;margin-top:.8rem;font-size:.9rem}
+  th,td{text-align:left;padding:.55rem .4rem;border-bottom:1px solid var(--line)}
+  th{font-family:var(--serif);font-weight:600;color:var(--ink-soft)}
+  td.n{text-align:right;font-family:var(--serif);color:var(--accent);font-variant-numeric:tabular-nums}
+  .done{color:var(--ink-faint)!important}
+  .brand-foot{position:fixed;bottom:max(2.2vh,env(safe-area-inset-bottom));left:0;right:0;text-align:center;font-size:.7rem;color:var(--ink-faint);letter-spacing:.18em;pointer-events:none}
+</style>
+</head>
+<body>
+<main class="stage" id="stage"></main>
+<div class="brand-foot">COFFEE&nbsp;JAM · 咖啡即兴</div>
+
+<script>
+/* ============================================================
+   CoffeeTI 0.3 — 静态前瞻版（问卷模型）
+   完整产品中 CoffeeTI 由真实冲煮记录聚合算出（越用越准）；
+   本 0.3 用问卷做代理，测市场兴趣 + 采集购买/了解意愿数据。
+   目录中标「示意」的烘焙商/咖啡店为虚构占位；标「真实」的是真实存在
+   的品牌，简介据公开信息整理、与本应用暂无合作，上线后由品牌方校正。
+   ============================================================ */
+
+/* ---- 可配置占位符（部署前替换） ---- */
+const CONFIG = {
+  GA4_ID: "G-XXXXXXXXXX",                 // 替换为你的 GA4 衡量 ID；保留占位则只走本机镜像
+  WAITLIST_ENDPOINT: "",                  // 可选：Formspree 等 POST 端点；留空则只记录事件
+  SHARE_URL: location.href.split('#')[0]  // 分享链接（部署后即 GitHub Pages 地址）
+};
+
+/* ---- 字母 → [轴, 朝正极的符号]；6 轴 ---- */
+const AXIS = {
+  B:["roast",-1],   D:["roast",+1],     // 烘焙：亮 ↔ 沉
+  F:["explore",-1], S:["explore",+1],   // 探索：守 ↔ 野
+  R:["rhythm",-1],  E:["rhythm",+1],    // 节奏：仪式 ↔ 随性
+  C:["mood",-1],    W:["mood",+1],      // 情绪：清醒 ↔ 温柔
+  N:["palate",-1],  L:["palate",+1],    // 本味：纯饮 ↔ 调饮
+  O:["social",-1],  G:["social",+1]     // 场域：独处 ↔ 共饮
+};
+const AXIS_ORDER = ["roast","explore","rhythm","mood","palate","social"];
+const AXIS_FULL = {
+  roast:["浅烘 · 明亮","深烘 · 沉稳"],
+  explore:["恋旧 · 信得过","猎奇 · 爱尝鲜"],
+  rhythm:["仪式 · 慢冲","随性 · 随手"],
+  mood:["清醒 · 提神","温柔 · 安抚"],
+  palate:["纯饮 · 听豆子","调饮 · 那口甜"],
+  social:["独处 · 自己的结界","共饮 · 冲给人喝"]
+};
+
+/* ---- 角色：深度测时各自带来一套专属题库（见 ROLE_BANK 按 role 归集）---- */
+const ROLES = [
+  {id:"consumer",     name:"消费者", hint:"就爱喝，不折腾"},
+  {id:"enthusiast",   name:"爱好者", hint:"喝得讲究，偶尔在家冲"},
+  {id:"practitioner", name:"实践者", hint:"手冲器具有一套"},
+  {id:"professional", name:"从业者", hint:"吃这碗饭的"},
+  {id:"barista",      name:"咖啡师", hint:"天天出品"},
+  {id:"roaster",      name:"烘焙师", hint:"和豆子打交道"}
+];
+const ROLE_BY_ID = {}; ROLES.forEach(r=>ROLE_BY_ID[r.id]=r);
+const TIER_LABEL = {core:"", deep:"进阶", role:"专属"};
+
+/* ---- 题库：core 简单测必出；deep 深度通用；role 按所选角色加题。
+        每题 4 选项：poleA / poleB（两极，带字母 L）+ mid（折中）+ skip（跳脱），
+        mid/skip 不带 L、计 0 分。题库内容见文末数据块（由内容工作流生成 + 反 slop 审稿）。---- */
+const QUESTIONS =
+[
+  {
+    "id": "core_1",
+    "axis": "roast",
+    "tier": "core",
+    "roles": [],
+    "q": "刚到手一杯没喝过的咖啡，闭眼前第一口，你心里盼的是——",
+    "poleA": {
+      "L": "B",
+      "t": "一口下去亮亮的，带点果子的酸，像刚切开的橙子"
+    },
+    "poleB": {
+      "L": "D",
+      "t": "厚厚一口压下来，焦糖和坚果的沉，像烤过头一点点的香"
+    },
+    "mid": {
+      "t": "看天气定——晴天想要亮的，阴天想要沉的"
+    },
+    "skip": {
+      "t": "我从不盼，端起来再说，咖啡又不归我管"
+    }
+  },
+  {
+    "id": "core_2",
+    "axis": "roast",
+    "tier": "core",
+    "roles": [],
+    "q": "加了奶之后，你最不能忍的是奶把哪一口盖掉——",
+    "poleA": {
+      "L": "B",
+      "t": "那点花香果酸被奶糊住，喝着像甜牛奶，可惜了"
+    },
+    "poleB": {
+      "L": "D",
+      "t": "那股焦苦的厚被冲淡，奶味浮在上面，撑不住"
+    },
+    "mid": {
+      "t": "都怕，所以奶我只加一点点，给个底就行"
+    },
+    "skip": {
+      "t": "加了奶我就当它是奶，不指望喝出咖啡了"
+    }
+  },
+  {
+    "id": "core_3",
+    "axis": "explore",
+    "tier": "core",
+    "roles": [],
+    "q": "朋友递来一杯，说这支有点像水果，你的第一反应——",
+    "poleA": {
+      "L": "F",
+      "t": "我有几支闭眼都好喝的，认准了就一直喝它"
+    },
+    "poleB": {
+      "L": "S",
+      "t": "没喝过的就想试，越奇怪越来劲，番茄味我都干过"
+    },
+    "mid": {
+      "t": "先抿一小口探探，对路就接着喝，不对就还他"
+    },
+    "skip": {
+      "t": "我喝不喝跟它像不像水果没关系，看当下想不想喝"
+    }
+  },
+  {
+    "id": "core_4",
+    "axis": "explore",
+    "tier": "core",
+    "roles": [],
+    "q": "一家新店菜单一长串没见过的名字，你怎么点——",
+    "poleA": {
+      "L": "F",
+      "t": "问老板店里最稳的那杯，认准了不踩雷"
+    },
+    "poleB": {
+      "L": "S",
+      "t": "挑最看不懂的那个点，来都来了，赌一把"
+    },
+    "mid": {
+      "t": "点一杯熟的保底，再加一杯没喝过的试水"
+    },
+    "skip": {
+      "t": "我不看菜单，直接报我那杯，哪家店都一样"
+    }
+  },
+  {
+    "id": "core_5",
+    "axis": "rhythm",
+    "tier": "core",
+    "roles": [],
+    "q": "周末早晨，桌上摆着咖啡器具，你更想要哪种早晨——",
+    "poleA": {
+      "L": "R",
+      "t": "烧水、称豆、慢慢绕圈注水，这十分钟我留给自己"
+    },
+    "poleB": {
+      "L": "E",
+      "t": "按一下，杯子接住，转身就去忙别的，咖啡得跟上我"
+    },
+    "mid": {
+      "t": "有空就慢冲一杯，赶时间就按一下，两套都备着"
+    },
+    "skip": {
+      "t": "周末早晨我还在睡，咖啡等我醒了再说"
+    }
+  },
+  {
+    "id": "core_6",
+    "axis": "rhythm",
+    "tier": "core",
+    "roles": [],
+    "q": "一天里，咖啡在你这儿是怎么个喝法——",
+    "poleA": {
+      "L": "R",
+      "t": "一天就那一两杯，每杯慢慢喝，喝完再说下一杯"
+    },
+    "poleB": {
+      "L": "E",
+      "t": "困了就续，一杯接一杯续命，喝几杯没数过"
+    },
+    "mid": {
+      "t": "忙起来连灌好几杯，闲下来就慢慢品一杯，看那天"
+    },
+    "skip": {
+      "t": "我没固定几杯——想起来才喝，谈不上节奏不节奏"
+    }
+  },
+  {
+    "id": "core_7",
+    "axis": "mood",
+    "tier": "core",
+    "roles": [],
+    "q": "对你来说，一杯咖啡更像哪一个——",
+    "poleA": {
+      "L": "C",
+      "t": "开机键，咔一下人才上线，没它今天启动不了"
+    },
+    "poleB": {
+      "L": "W",
+      "t": "一个只属于自己的安静角落，跟提不提神没关系"
+    },
+    "mid": {
+      "t": "早上那杯是开机，下午那杯是喘口气，看时段"
+    },
+    "skip": {
+      "t": "就是个饮料，渴了喝、想喝喝，别给它加戏"
+    }
+  },
+  {
+    "id": "core_8",
+    "axis": "mood",
+    "tier": "core",
+    "roles": [],
+    "q": "最累的那一天，你想从一杯咖啡里拿到什么——",
+    "poleA": {
+      "L": "C",
+      "t": "够冲的那一下，把人从瘫着的状态硬拽起来"
+    },
+    "poleB": {
+      "L": "W",
+      "t": "一点热乎的温度，握在手里，缓一口气再继续"
+    },
+    "mid": {
+      "t": "先靠它顶住精神，喝到后半杯再慢慢松下来"
+    },
+    "skip": {
+      "t": "那天我不靠咖啡，靠躺平和闭嘴"
+    }
+  },
+  {
+    "id": "core_9",
+    "axis": "palate",
+    "tier": "core",
+    "roles": [],
+    "q": "同样一支好豆，你更想——",
+    "poleA": {
+      "L": "N",
+      "t": "黑着喝，尝它本来那口酸和甜"
+    },
+    "poleB": {
+      "L": "L",
+      "t": "兑成生椰拿铁，那口奶香椰香才够味"
+    },
+    "mid": {
+      "t": "看心情——想认真喝就黑的，想放松就来杯甜的"
+    },
+    "skip": {
+      "t": "哪种都行，那天嘴想要什么就喝什么，不挑这个"
+    }
+  },
+  {
+    "id": "core_10",
+    "axis": "palate",
+    "tier": "core",
+    "roles": [],
+    "q": "不用想，你的点单默认那一杯是——",
+    "poleA": {
+      "L": "N",
+      "t": "黑的，不加奶不加糖，但那个黑我挑，豆子不对我喝不下"
+    },
+    "poleB": {
+      "L": "L",
+      "t": "带奶带甜的那杯，闭眼点都好喝，稳稳的踏实"
+    },
+    "mid": {
+      "t": "工作日喝黑的清醒，周末犒劳自己来杯甜的"
+    },
+    "skip": {
+      "t": "我没有默认那杯，每次到店现看心情现挑"
+    }
+  },
+  {
+    "id": "core_11",
+    "axis": "social",
+    "tier": "core",
+    "roles": [],
+    "q": "你最常喝咖啡的样子，是哪一种——",
+    "poleA": {
+      "L": "O",
+      "t": "一个人对着窗，谁都别来，这杯是我给自己留的结界"
+    },
+    "poleB": {
+      "L": "G",
+      "t": "和人坐着边聊边喝，话头不断，咖啡是个由头"
+    },
+    "mid": {
+      "t": "上午一个人闷头喝，下午约人一起喝，两种都常有"
+    },
+    "skip": {
+      "t": "我喝咖啡都在走路或者赶地铁，谈不上什么样子"
+    }
+  },
+  {
+    "id": "core_12",
+    "axis": "social",
+    "tier": "core",
+    "roles": [],
+    "q": "冲咖啡这件事，哪一半更让你享受——",
+    "poleA": {
+      "L": "O",
+      "t": "自己安静冲完，慢慢喝掉，整个过程只有我和这杯"
+    },
+    "poleB": {
+      "L": "G",
+      "t": "冲一壶分给大家，盯着别人喝下第一口的表情"
+    },
+    "mid": {
+      "t": "自己先冲一杯过过瘾，有人来了再冲一壶招呼"
+    },
+    "skip": {
+      "t": "我不冲，享受的是端起别人冲好的那一刻"
+    }
+  },
+  {
+    "id": "deep_shared_1",
+    "axis": "roast",
+    "tier": "deep",
+    "roles": [],
+    "q": "同一支豆，烘焙商出了浅和深两个版本，你会先拆开哪一袋——",
+    "poleA": {
+      "L": "B",
+      "t": "浅的那袋，想先闻闻它把花果香留住了多少"
+    },
+    "poleB": {
+      "L": "D",
+      "t": "深的那袋，焦糖和巧克力那股稳，喝着踏实"
+    },
+    "mid": {
+      "t": "两袋都开，早上喝深的醒神，下午留浅的慢慢品，看那天想要哪种"
+    },
+    "skip": {
+      "t": "我先看养豆排气到没到位，豆子没缓过来，浅深都一样难喝"
+    }
+  },
+  {
+    "id": "deep_shared_2",
+    "axis": "roast",
+    "tier": "deep",
+    "roles": [],
+    "q": "夏天一杯冰美式，你心里那杯的底色是——",
+    "poleA": {
+      "L": "B",
+      "t": "浅烘冷下来更透，冰镇住的果酸像汽水一样窜"
+    },
+    "poleB": {
+      "L": "D",
+      "t": "深烘压住冰，苦底厚实，凉了也不发空"
+    },
+    "mid": {
+      "t": "得分场合，自己喝挑浅烘玩花样，赶时间下楼买就要深烘扛得住"
+    },
+    "skip": {
+      "t": "夏天我根本不碰冰美式，冷萃泡一夜，浅深这事在我这儿不成立"
+    }
+  },
+  {
+    "id": "deep_shared_3",
+    "axis": "explore",
+    "tier": "deep",
+    "roles": [],
+    "q": "一家常去的店上了新豆，菜单写着个你没听过的处理法，你——",
+    "poleA": {
+      "L": "F",
+      "t": "还是点那杯喝惯的，来都来了不想拿这趟冒险"
+    },
+    "poleB": {
+      "L": "S",
+      "t": "立刻换新的，没喝过的处理法不试白来一趟"
+    },
+    "mid": {
+      "t": "先问店员一句像不像我平时的口，像就试，跨度太大就留着下次"
+    },
+    "skip": {
+      "t": "我看的是手冲还是机器出，谁做的，这比哪支豆都更决定我点什么"
+    }
+  },
+  {
+    "id": "deep_shared_4",
+    "axis": "explore",
+    "tier": "deep",
+    "roles": [],
+    "q": "钱包里只够再囤一支豆，你伸手拿的是——",
+    "poleA": {
+      "L": "F",
+      "t": "那支闭眼买不翻车的口粮，稳稳喝完这一个月"
+    },
+    "poleB": {
+      "L": "S",
+      "t": "一支没见过的小产区，贵点也想知道它什么味"
+    },
+    "mid": {
+      "t": "买半磅口粮垫底，再凑一小袋新豆尝鲜，两头都不亏待自己"
+    },
+    "skip": {
+      "t": "这月先不囤了，柜里那几支挂耳还没喝完，囤多了只会放陈"
+    }
+  },
+  {
+    "id": "deep_shared_5",
+    "axis": "rhythm",
+    "tier": "deep",
+    "roles": [],
+    "q": "闹钟响了，今天第一杯咖啡，你和它的关系是——",
+    "poleA": {
+      "L": "R",
+      "t": "烧水、称豆、闷蒸、分段，这十分钟是我给自己留的"
+    },
+    "poleB": {
+      "L": "E",
+      "t": "胶囊机按一下，或者楼下顺一杯，端起来人就开机了"
+    },
+    "mid": {
+      "t": "工作日按一下了事，到了周末才慢慢冲，看那天有没有那个闲心"
+    },
+    "skip": {
+      "t": "我第一杯不在早上，得先把人清醒过来再说，空腹那杯我戒了"
+    }
+  },
+  {
+    "id": "deep_shared_6",
+    "axis": "rhythm",
+    "tier": "deep",
+    "roles": [],
+    "q": "手边一台磨豆机，你和它的相处方式更像——",
+    "poleA": {
+      "L": "R",
+      "t": "每次现磨现冲，闻着粉香慢慢来，急不得"
+    },
+    "poleB": {
+      "L": "E",
+      "t": "周末一次磨够一周，密封罐一存，要喝直接舀"
+    },
+    "mid": {
+      "t": "口粮豆图省事磨一批存着，好豆子才现磨，分豆不分心"
+    },
+    "skip": {
+      "t": "我没磨豆机，挂耳一撕一冲，把这套讲究让给有空的人"
+    }
+  },
+  {
+    "id": "deep_shared_7",
+    "axis": "mood",
+    "tier": "deep",
+    "roles": [],
+    "q": "今天过得有点散，傍晚这杯咖啡，你想让它替你做的是——",
+    "poleA": {
+      "L": "C",
+      "t": "把人重新拧紧，醒一醒，今晚还有事得撑住"
+    },
+    "poleB": {
+      "L": "W",
+      "t": "陪我把这口气缓下来，不催，坐一会儿就好"
+    },
+    "mid": {
+      "t": "先来口浓的提下神，等事干完再换杯温的收尾，看那一刻缺哪样"
+    },
+    "skip": {
+      "t": "散的时候我不靠咖啡，下楼走两圈比哪杯都管用，这事不归它管"
+    }
+  },
+  {
+    "id": "deep_shared_8",
+    "axis": "mood",
+    "tier": "deep",
+    "roles": [],
+    "q": "深夜还醒着，桌上那杯咖啡，你和它的默契是——",
+    "poleA": {
+      "L": "C",
+      "t": "趁劲还没散赶紧灌，靠它把今晚的活儿熬完"
+    },
+    "poleB": {
+      "L": "W",
+      "t": "其实不为提神，就想要这一口温热的陪着熬"
+    },
+    "mid": {
+      "t": "前半夜要冲劲喝浓的，临收尾换杯低咖的暖手，看还剩多少活"
+    },
+    "skip": {
+      "t": "深夜我换低因或换茶，咖啡因这点我守得死，免得明早更困"
+    }
+  },
+  {
+    "id": "deep_shared_9",
+    "axis": "palate",
+    "tier": "deep",
+    "roles": [],
+    "q": "一支花香很冲的浅烘耶加，你最想怎么喝它——",
+    "poleA": {
+      "L": "N",
+      "t": "纯黑不加料，安静听它那股茉莉花和柑橘在说什么"
+    },
+    "poleB": {
+      "L": "L",
+      "t": "兑点奶或加滴糖，把那股冲的花香顺成我喝着舒服的甜"
+    },
+    "mid": {
+      "t": "头几口先纯喝认认它本味，凉了再兑点奶换个喝法，一支豆喝两遍"
+    },
+    "skip": {
+      "t": "这种太挑的我留着冰手冲，热着喝花香一散就剩涩，喝法得迁就豆"
+    }
+  },
+  {
+    "id": "deep_shared_10",
+    "axis": "palate",
+    "tier": "deep",
+    "roles": [],
+    "q": "和朋友进了家咖啡馆，你落座后点单的本能是——",
+    "poleA": {
+      "L": "N",
+      "t": "一杯单品手冲，想拆它的酸甜尾韵，喝的是豆子本身"
+    },
+    "poleB": {
+      "L": "L",
+      "t": "一杯店里招牌特调，奶香果香堆出来的那口踏实好喝"
+    },
+    "mid": {
+      "t": "自己点支单品认真喝，再叫一杯招牌特调跟朋友分着尝，两种讲究都占上"
+    },
+    "skip": {
+      "t": "我先看店里有没有自烘豆能带走，喝什么其次，挖到好豆这趟才值"
+    }
+  },
+  {
+    "id": "deep_shared_11",
+    "axis": "social",
+    "tier": "deep",
+    "roles": [],
+    "q": "周末午后有杯好咖啡，你脑子里最先浮现的画面是——",
+    "poleA": {
+      "L": "O",
+      "t": "一个人对着窗，那半小时谁都别进来，是我自己的结界"
+    },
+    "poleB": {
+      "L": "G",
+      "t": "招呼上人，咖啡是话头，热闹起来这杯才喝得香"
+    },
+    "mid": {
+      "t": "先自己安静喝头一杯回回神，再叫人来续第二壶，独处和热闹分两段过"
+    },
+    "skip": {
+      "t": "好咖啡我舍不得当背景音，得专心喝，有没有人在身边都不影响这件事"
+    }
+  },
+  {
+    "id": "deep_shared_12",
+    "axis": "social",
+    "tier": "deep",
+    "roles": [],
+    "q": "新到一支让你眼前一亮的豆子，你第一反应是——",
+    "poleA": {
+      "L": "O",
+      "t": "先自己慢慢冲明白，每一杯都为自己这口调到位"
+    },
+    "poleB": {
+      "L": "G",
+      "t": "赶紧约人来开，就想看别人喝第一口时那个表情"
+    },
+    "mid": {
+      "t": "头两杯自己冲透摸清脾气，参数稳了再请人喝，先认得它再分享它"
+    },
+    "skip": {
+      "t": "好豆我多半直接寄一袋给那个会懂的朋友，分享不一定要凑到一张桌上"
+    }
+  },
+  {
+    "id": "deep_shared_13",
+    "axis": "social",
+    "tier": "deep",
+    "roles": [],
+    "q": "你冲了一壶豆，分量够好几杯，你最享受的环节其实是——",
+    "poleA": {
+      "L": "O",
+      "t": "一个人守着这壶慢慢喝，凉热变化里没人打扰"
+    },
+    "poleB": {
+      "L": "G",
+      "t": "分给围着的人，看大家对同一支豆各说各的味"
+    },
+    "mid": {
+      "t": "热的时候招呼大家趁鲜喝，剩下凉的留给自己慢慢收尾，前热闹后清静"
+    },
+    "skip": {
+      "t": "我冲多半是为练手，谁喝都行，享受的是注水那几下稳没稳，喝是顺带的"
+    }
+  },
+  {
+    "id": "role_enthusiast_1",
+    "axis": "explore",
+    "tier": "role",
+    "roles": [
+      "enthusiast"
+    ],
+    "q": "口粮豆快见底了，下单那一刻你手指停在——",
+    "poleA": {
+      "t": "那支喝惯的，闭眼买不会翻车，喝完心里有底",
+      "L": "F"
+    },
+    "poleB": {
+      "t": "购物车里那支没听过的处理法，想知道它到底什么味",
+      "L": "S"
+    },
+    "mid": {
+      "t": "一半口粮压底，一半留给尝鲜，钱包和好奇心各让一步"
+    },
+    "skip": {
+      "t": "不在一支上纠结，挂耳混装来一盒，把选择权留给每天早上的那点情绪"
+    }
+  },
+  {
+    "id": "role_enthusiast_2",
+    "axis": "roast",
+    "tier": "role",
+    "roles": [
+      "enthusiast"
+    ],
+    "q": "有人尝了你冲的那杯，皱眉说“这也太淡了，是茶吧”，你心里——",
+    "poleA": {
+      "t": "淡才好，那股花果茶感正是我要的，浓不浓不重要",
+      "L": "B"
+    },
+    "poleB": {
+      "t": "其实我也这么想，还是深一点的醇厚喝着踏实",
+      "L": "D"
+    },
+    "mid": {
+      "t": "白天来浅的清醒，晚上换深的压一压，看天看时辰"
+    },
+    "skip": {
+      "t": "是茶是咖啡我不接这个茬，我只认这一口顺不顺我自己的嘴"
+    }
+  },
+  {
+    "id": "role_enthusiast_3",
+    "axis": "palate",
+    "tier": "role",
+    "roles": [
+      "enthusiast"
+    ],
+    "q": "周末在家给自己冲一杯，你更想要的那口是——",
+    "poleA": {
+      "t": "黑的，安安静静听这支豆子说它的酸甜余韵",
+      "L": "N"
+    },
+    "poleB": {
+      "t": "加奶加点甜，要的就是那口确定好喝的踏实",
+      "L": "L"
+    },
+    "mid": {
+      "t": "先黑的抿两口认认豆子，再兑成奶咖把剩下半杯喝舒服"
+    },
+    "skip": {
+      "t": "在家不为这一口较劲，冰块一加做杯冰的，要的就是当下那股痛快"
+    }
+  },
+  {
+    "id": "role_enthusiast_4",
+    "axis": "explore",
+    "tier": "role",
+    "roles": [
+      "enthusiast"
+    ],
+    "q": "刚摸到风味轮那阵，店员说这支“有茉莉和莓子”，你——",
+    "poleA": {
+      "t": "我嘴笨，喝出酸甜顺口就够了，对得上对不上不强求",
+      "L": "F"
+    },
+    "poleB": {
+      "t": "立刻对着喝，非要把茉莉和莓子从这杯里揪出来才甘心",
+      "L": "S"
+    },
+    "mid": {
+      "t": "先自己盲喝写两个词，再翻卡片对答案，对上了偷着乐"
+    },
+    "skip": {
+      "t": "风味轮是别人的地图，我只画自己的——这杯我爱、那杯不爱，足够导航"
+    }
+  },
+  {
+    "id": "role_enthusiast_5",
+    "axis": "roast",
+    "tier": "role",
+    "roles": [
+      "enthusiast"
+    ],
+    "q": "你做拿铁时，最怕奶把哪一口给糊没了——",
+    "poleA": {
+      "t": "那股若有若无的花果酸香，被奶一盖就白瞎了",
+      "L": "B"
+    },
+    "poleB": {
+      "t": "那口压得住奶的焦苦厚劲，淡了就撑不起这杯",
+      "L": "D"
+    },
+    "mid": {
+      "t": "看豆子下菜：浅的就少放奶留香，深的多放奶图个顺"
+    },
+    "skip": {
+      "t": "做拿铁我冲的是奶香，咖啡当个底色就好，糊不糊我不计较这个"
+    }
+  },
+  {
+    "id": "role_enthusiast_6",
+    "axis": "rhythm",
+    "tier": "role",
+    "roles": [
+      "enthusiast"
+    ],
+    "q": "工作日早上要喝一杯，你和它的相处方式是——",
+    "poleA": {
+      "t": "闷蒸、分段、看着水流走，这十分钟我愿意花",
+      "L": "R"
+    },
+    "poleB": {
+      "t": "挂耳一撕、聪明杯一泡，好喝就行，别耽误出门",
+      "L": "E"
+    },
+    "mid": {
+      "t": "赶时间就挂耳应付，难得睡到自然醒那天才慢慢冲一回"
+    },
+    "skip": {
+      "t": "早上这杯我不在家解决，路上顺手买一杯，把这点工夫省下来多睡会儿"
+    }
+  },
+  {
+    "id": "role_enthusiast_7",
+    "axis": "palate",
+    "tier": "role",
+    "roles": [
+      "enthusiast"
+    ],
+    "q": "出差住酒店，行李里那包挂耳，对你是——",
+    "poleA": {
+      "t": "将就但不凑合，黑着喝，至少这一口还是熟悉的本味",
+      "L": "N"
+    },
+    "poleB": {
+      "t": "顺手薅两包小牛奶兑成奶咖，甜一点才像给自己的安慰",
+      "L": "L"
+    },
+    "mid": {
+      "t": "头一杯黑的醒神，下午那杯兑奶解馋，一包两种喝法"
+    },
+    "skip": {
+      "t": "挂耳我懒得带，到了就搜附近一家坐下喝，换个城市也认它的咖啡馆"
+    }
+  },
+  {
+    "id": "role_professional_1",
+    "axis": "palate",
+    "tier": "role",
+    "roles": [
+      "professional"
+    ],
+    "q": "出品要稳，你押在哪一头：守住豆子的本味，还是调出客人记得住的那口？",
+    "poleA": {
+      "L": "N",
+      "t": "本味派。一支豆冲对了，番茄、乌龙、莓子自己会说话，我的活是别挡路。"
+    },
+    "poleB": {
+      "L": "L",
+      "t": "成品派。客人记不住产区，记得住那杯好喝。能让人回头的甜感就是我的手艺。"
+    },
+    "mid": {
+      "t": "看豆看单：精品手冲我退到幕后让豆子说话，招牌饮品我就敢加料调出记忆点，两套出品逻辑分开走，都得做到位。"
+    },
+    "skip": {
+      "t": "稳不稳压根不在风味上分高下。同一支豆同一手法，我连着出三杯 TDS 飘 0.3，先把萃取一致性修了，再谈押哪头。"
+    }
+  },
+  {
+    "id": "role_professional_2",
+    "axis": "explore",
+    "tier": "role",
+    "roles": [
+      "professional"
+    ],
+    "q": "上新品，你的底气来自哪：跑过无数遍的安全牌，还是赌一把没人做过的？",
+    "poleA": {
+      "L": "F",
+      "t": "守得住。菜单每一支我都能闭眼复刻，客人今天喝的和上个月一个味，这份不走样就是信誉。"
+    },
+    "poleB": {
+      "L": "S",
+      "t": "野得起。厌氧、冷萃气泡、冷门产地我先上为敬，被说像番茄酱油也认，总得有人先趟这条路。"
+    },
+    "mid": {
+      "t": "主菜单全押信得过的常驻养店，留两个限定位放野的养名声。稳的兜底、野的破圈，对我都是底气，少一头店就薄了。"
+    },
+    "skip": {
+      "t": "上不上新轮不到我赌脾气。先看豆商这批货稳不稳、客群接不接得住，没数据支撑我宁可空着位，别拿正式出品练手。"
+    }
+  },
+  {
+    "id": "role_professional_3",
+    "axis": "mood",
+    "tier": "role",
+    "roles": [
+      "professional"
+    ],
+    "q": "你给店里定的气质，是让人喝完精神一振，还是让人愿意多坐一会儿？",
+    "poleA": {
+      "L": "C",
+      "t": "提神派。深烘、浓缩、出杯快，客人是来续命的，给得干脆比给得温柔更要紧。"
+    },
+    "poleB": {
+      "L": "W",
+      "t": "安抚派。慢冲、浅烘、灯光压暗，客人是来躲半小时的，我把整家店的节奏替他调慢。"
+    },
+    "mid": {
+      "t": "早高峰我做提神生意，下午茶时段切到安抚模式。一家店两副面孔，跟着客流换挡，两个时段我都想接住。"
+    },
+    "skip": {
+      "t": "店的气质不是我在吧台定的，是选址和客群定的。商务区你慢不下来、社区店你快不起来，先认这盘棋再设计动线。"
+    }
+  },
+  {
+    "id": "role_professional_4",
+    "axis": "roast",
+    "tier": "role",
+    "roles": [
+      "professional"
+    ],
+    "q": "招牌豆的烘焙度，你愿意把店压在哪一边：明亮的浅，还是踏实的深？",
+    "poleA": {
+      "L": "B",
+      "t": "押浅烘。把水洗耶加的花果香做到位，懂的人一口认出是这家，被说像茶吧我当夸奖收下。"
+    },
+    "poleB": {
+      "L": "D",
+      "t": "押深烘。醇厚、回甘、不挑客人的舌头，菜市场口也开得下去，深烘养活的是现金流。"
+    },
+    "mid": {
+      "t": "招牌做一浅一深两支并列，让客人自己站队。浅的接懂行的、深的接图稳的，两头都能端住，店才不挑客。"
+    },
+    "skip": {
+      "t": "烘焙度我说了不算，看豆子本身适合到哪。瑰夏我不舍得深烘、商业豆我不硬撑浅烘，是豆决定度，不是我替它选边。"
+    }
+  },
+  {
+    "id": "role_professional_5",
+    "axis": "palate",
+    "tier": "role",
+    "roles": [
+      "professional"
+    ],
+    "q": "对客人解释一杯咖啡，你更愿意讲什么：风味的来龙去脉，还是直接给一口共鸣？",
+    "poleA": {
+      "L": "N",
+      "t": "讲门道。产地、处理法、闷蒸为什么这么走，客人愿意听我就愿意拆，懂得越多这杯喝得越有滋味。"
+    },
+    "poleB": {
+      "L": "L",
+      "t": "给感觉。不堆术语，就说这杯像晒过太阳的橘子皮，客人笑了、点头了，这单就算成了。"
+    },
+    "mid": {
+      "t": "看客人接什么：问得细的我陪他一路钻处理法，只想喝个开心的我递个比喻就收。话术跟着人换，两种我都备着。"
+    },
+    "skip": {
+      "t": "解释多了反而露怯。这杯萃取够干净，端上去它自己会说话，客人喝完想多问我再接，不想问我绝不上去科普。"
+    }
+  },
+  {
+    "id": "role_professional_6",
+    "axis": "rhythm",
+    "tier": "role",
+    "roles": [
+      "professional"
+    ],
+    "q": "你心里的好出品，是一套不走样的标准动作，还是手随心走的临场发挥？",
+    "poleA": {
+      "L": "R",
+      "t": "标准派。注水节奏、水温、研磨刻度全写进 SOP，谁来都冲得出同一杯，稳定本身就是专业。"
+    },
+    "poleB": {
+      "L": "E",
+      "t": "手感派。今天豆子排气和湿度都不一样，我凭手当场调，参数表是死的、舌头是活的。"
+    },
+    "mid": {
+      "t": "SOP 是地板不是天花板。新人照着冲不出错，老手在框里微调找当天最优解，标准兜底、手感封顶，两层我都要。"
+    },
+    "skip": {
+      "t": "标准还是手感都是过程，可复现才是结果。我不信手感玄学也不死守刻度，最后拿 TDS 和金杯萃取率说话。"
+    }
+  },
+  {
+    "id": "role_professional_7",
+    "axis": "explore",
+    "tier": "role",
+    "roles": [
+      "professional"
+    ],
+    "q": "做一家店的审美，你更想被同行认成哪一种：守得住经典的老派，还是敢越界的新派？",
+    "poleA": {
+      "L": "F",
+      "t": "老派体面。一台调好的杨家、一支稳的耶加、克制的菜单，不追风口，开二十年还在原地。"
+    },
+    "poleB": {
+      "L": "S",
+      "t": "新派敢玩。生椰冷萃气泡 dirty 我都敢上单，被骂不够纯也认，这行是被越界的人一寸寸往前推的。"
+    },
+    "mid": {
+      "t": "底子用老派打、手活留新派的位。经典撑住下限、实验抬高上限，同行记得住的恰恰是这种又稳又敢的店，缺哪头都不完整。"
+    },
+    "skip": {
+      "t": "我不在乎同行把我认成哪派。客人愿意来、愿意回头，比拿到圈内人那个点头实在，审美这事最后是生意验的，不是同行评的。"
+    }
+  },
+  {
+    "id": "role_barista_1",
+    "axis": "rhythm",
+    "tier": "role",
+    "roles": [
+      "barista"
+    ],
+    "q": "下班后给自己冲那一杯，你站在台前——",
+    "poleA": {
+      "t": "该养豆养豆、该称重称重，闷蒸掐着秒表，这杯是给自己的交代",
+      "L": "R"
+    },
+    "poleB": {
+      "t": "目测一勺、热水一冲，手稳全凭肌肉记忆，懒得再当一回班",
+      "L": "E"
+    },
+    "mid": {
+      "t": "客人多的日子随手冲，难得清闲就摆开手冲壶慢慢玩，看那天还剩多少力气"
+    },
+    "skip": {
+      "t": "下班那杯我不碰咖啡了，换瓶啤酒——白天闻够豆子味了"
+    }
+  },
+  {
+    "id": "role_barista_2",
+    "axis": "palate",
+    "tier": "role",
+    "roles": [
+      "barista"
+    ],
+    "q": "新来一支浅烘水洗耶加，你第一时间想——",
+    "poleA": {
+      "t": "手冲单出，茉莉柑橘别藏，让客人喝出豆子本来的样子",
+      "L": "N"
+    },
+    "poleB": {
+      "t": "做杯冰摇或加点气泡，那股花香衬着甜更抓人，喝着也松快",
+      "L": "L"
+    },
+    "mid": {
+      "t": "先单冲一杯自己确认风味，再决定它配奶还是裸喝，看豆子说话"
+    },
+    "skip": {
+      "t": "这支留给点单的熟客，我这会儿只想来杯不用动脑的深烘"
+    }
+  },
+  {
+    "id": "role_barista_3",
+    "axis": "social",
+    "tier": "role",
+    "roles": [
+      "barista"
+    ],
+    "q": "拉花拉到第三年，那朵叶子对你意味着——",
+    "poleA": {
+      "t": "推到客人面前那一下，看他眼睛亮一秒，这杯就值了",
+      "L": "G"
+    },
+    "poleB": {
+      "t": "对称不对称我自己门儿清，那是收口干不干净的事，跟谁看没关系",
+      "L": "O"
+    },
+    "mid": {
+      "t": "熟客来我随手压个心，第一次见的客人才会认真拉一朵，看人下菜"
+    },
+    "skip": {
+      "t": "叶子郁金香都行，我更在乎奶泡绵不绵——花是面子，口感是里子"
+    }
+  },
+  {
+    "id": "role_barista_4",
+    "axis": "mood",
+    "tier": "role",
+    "roles": [
+      "barista"
+    ],
+    "q": "一个明显累瘫的客人坐下，说随便给杯咖啡，你心里盘的是——",
+    "poleA": {
+      "t": "上杯够劲的，浓缩压满、奶别太多，他要的是被顶起来那一下",
+      "L": "C"
+    },
+    "poleB": {
+      "t": "上杯顺口的，奶香裹着不刺激，让他先缓口气再说提神",
+      "L": "W"
+    },
+    "mid": {
+      "t": "先问一句晚上还熬不熬，熬就给足咖啡因，不熬就温柔点收着来"
+    },
+    "skip": {
+      "t": "我直接端杯温水过去，这状态喝啥咖啡都救不了，先让他坐会儿"
+    }
+  },
+  {
+    "id": "role_barista_5",
+    "axis": "explore",
+    "tier": "role",
+    "roles": [
+      "barista"
+    ],
+    "q": "客人点单时甩一句听你的，你的安全感来自——",
+    "poleA": {
+      "t": "给我那支闭眼出品的招牌豆，每杯都稳，不会翻车才敢替人做主",
+      "L": "F"
+    },
+    "poleB": {
+      "t": "正好把昨天上的厌氧 SOE 推给他，番茄酱油味也好这口才好玩",
+      "L": "S"
+    },
+    "mid": {
+      "t": "看他像不像爱折腾的，老实人给招牌，眼里有光的才上那支怪豆"
+    },
+    "skip": {
+      "t": "听我的就是先反问三句，把听你的变成你想喝啥，我不背这锅"
+    }
+  },
+  {
+    "id": "role_barista_6",
+    "axis": "palate",
+    "tier": "role",
+    "roles": [
+      "barista"
+    ],
+    "q": "你自己最得意的那杯出品，是——",
+    "poleA": {
+      "t": "一杯不加糖不加奶的单品手冲，喝它就喝产区那点干净的酸甜",
+      "L": "N"
+    },
+    "poleB": {
+      "t": "一杯趁分层一口闷的 dirty，冰牛奶撞热浓缩那瞬间，调出来的层次才过瘾",
+      "L": "L"
+    },
+    "mid": {
+      "t": "看场子——精品日单出耶加，忙时一杯 dirty 端得快也端得稳，两手都得硬"
+    },
+    "skip": {
+      "t": "我最得意的是收尾那杯，台面冲洗顺手、地垫一尘不染，比哪杯都让我踏实"
+    }
+  },
+  {
+    "id": "role_barista_7",
+    "axis": "rhythm",
+    "tier": "role",
+    "roles": [
+      "barista"
+    ],
+    "q": "高峰期单子压成一排，你的手会——",
+    "poleA": {
+      "t": "再忙也按步骤来，称粉、布粉、压粉一步不省，准了才快得稳",
+      "L": "R"
+    },
+    "poleB": {
+      "t": "节奏跟着排队的人走，差一克无所谓，先把这波人喂出去再说",
+      "L": "E"
+    },
+    "mid": {
+      "t": "意式机这边放手提速，手冲单子单独留到人少了再认真做，分两套节奏"
+    },
+    "skip": {
+      "t": "单子排太长我先喊一嗓子稍等，急出来的咖啡谁喝谁知道，宁可让客人多站会儿"
+    }
+  },
+  {
+    "id": "role_roaster_1",
+    "axis": "roast",
+    "tier": "role",
+    "roles": [
+      "roaster"
+    ],
+    "q": "一麻袋陌生生豆摊在工作台上，最让你手痒的那一炉，你想把它烘成——",
+    "poleA": {
+      "L": "B",
+      "t": "停在一爆密集后那口，让产区的花果和酸亮还留在杯子里跳"
+    },
+    "poleB": {
+      "L": "D",
+      "t": "再往下走几度，发展出焦糖和可可的厚骨架，端起来踏实"
+    },
+    "mid": {
+      "t": "看豆说话——密度高的甜感豆我敢留浅，单薄薄皮的就往深里收，没有一条曲线打天下"
+    },
+    "skip": {
+      "t": "我不先想深浅，先闻生豆、捏密度、看含水率，烘度是豆子告诉我的，不是我替它定的"
+    }
+  },
+  {
+    "id": "role_roaster_2",
+    "axis": "roast",
+    "tier": "role",
+    "roles": [
+      "roaster"
+    ],
+    "q": "下豆前那十几秒，你眼睛盯着的取舍是——",
+    "poleA": {
+      "L": "B",
+      "t": "宁可发展度差那一点点，也要保住没被烘掉的那股明亮酸香"
+    },
+    "poleB": {
+      "L": "D",
+      "t": "宁可亮度收一些，也要把豆芯烘透，绝不留一丝生青和谷物味"
+    },
+    "mid": {
+      "t": "豆表豆芯都得照顾，亮度和发展我都要，宁可多烘几锅去找那个两全的窗口"
+    },
+    "skip": {
+      "t": "我不在下豆那一刻纠结，该纠结的在曲线中段——发展不足是前面没走对，终点补不回来"
+    }
+  },
+  {
+    "id": "role_roaster_3",
+    "axis": "explore",
+    "tier": "role",
+    "roles": [
+      "roaster"
+    ],
+    "q": "一支厌氧重发酵的生豆，闻着像草莓酱混了点酱油，你的反应是——",
+    "poleA": {
+      "L": "F",
+      "t": "发酵味盖过产区本身就算翻车，我宁可烘干净、烘平衡，让人一口喝得出产地"
+    },
+    "poleB": {
+      "L": "S",
+      "t": "来劲，越冲我越想试，看看这股野味能被我烘出几层来"
+    },
+    "mid": {
+      "t": "先抓小批量试烘一锅，好玩归好玩，得验过它没缺陷、稳定得了，我才敢上正式批次"
+    },
+    "skip": {
+      "t": "厌氧不厌氧不是我评判的点，处理法干不干净才是——脏发酵再花哨我也不碰"
+    }
+  },
+  {
+    "id": "role_roaster_4",
+    "axis": "explore",
+    "tier": "role",
+    "roles": [
+      "roaster"
+    ],
+    "q": "选生豆下单，你更愿意把预算压在——",
+    "poleA": {
+      "L": "F",
+      "t": "那几个年年稳的产区批次，闭眼烘也不翻车，客人喝着也认得"
+    },
+    "poleB": {
+      "L": "S",
+      "t": "没人玩过的新处理新品种，就算可能砸手里，也想第一个把它烘明白"
+    },
+    "mid": {
+      "t": "大头压在口粮批次先保住出杯，再留一小笔给新东西练手，稳和野各占我一格"
+    },
+    "skip": {
+      "t": "我不按稳或野挑，按杯测桌上的结果挑——分数说话，名头和噱头都靠边站"
+    }
+  },
+  {
+    "id": "role_roaster_5",
+    "axis": "social",
+    "tier": "role",
+    "roles": [
+      "roaster"
+    ],
+    "q": "同一支豆，给客人烘和给自己烘，你心里那把尺子——",
+    "poleA": {
+      "L": "O",
+      "t": "给自己那锅我敢留更浅、更尖锐，那是只烘给自己的一点偏执"
+    },
+    "poleB": {
+      "L": "G",
+      "t": "我最上心的永远是出品那锅，得让没经验的人也一口喝懂它好在哪"
+    },
+    "mid": {
+      "t": "两把尺子我都用——自己那锅留着找边界，客人那锅收着来，一边喂养另一边"
+    },
+    "skip": {
+      "t": "我不分给谁烘，一支豆只有一个最佳解，我烘它该有的样子，不迁就谁的舌头"
+    }
+  },
+  {
+    "id": "role_roaster_6",
+    "axis": "social",
+    "tier": "role",
+    "roles": [
+      "roaster"
+    ],
+    "q": "一炉刚养好、状态正巅峰的得意之作，你第一个念头是——",
+    "poleA": {
+      "L": "O",
+      "t": "先给自己留够，巅峰期那几天的杯子我舍不得分，自己慢慢喝"
+    },
+    "poleB": {
+      "L": "G",
+      "t": "赶紧分给几个懂行的，就等他们端起来那句「这锅你怎么烘的」"
+    },
+    "mid": {
+      "t": "留一半自己复盘记笔记，另一半分出去听反馈，喝和被喝我都不想错过"
+    },
+    "skip": {
+      "t": "得意是结果，我盯的是数据——这锅好在哪得能复现，不然下次就成玄学了"
+    }
+  },
+  {
+    "id": "role_roaster_7",
+    "axis": "rhythm",
+    "tier": "role",
+    "roles": [
+      "roaster"
+    ],
+    "q": "豆子刚下炉、还在排气那几天，你和它的关系是——",
+    "poleA": {
+      "L": "R",
+      "t": "老老实实守养豆期，排气没走完不碰它，急出来的杯子对不起这支豆"
+    },
+    "poleB": {
+      "L": "E",
+      "t": "下炉当天就开一杯，趁那股冲劲喝它最野的样子，养透了反而没意思"
+    },
+    "mid": {
+      "t": "下炉先尝一杯记个底，养到第几天再尝一杯，盯着它一天天变才是乐趣"
+    },
+    "skip": {
+      "t": "养几天不是我说了算，是豆子说了算——深烘排气快、浅烘慢，我跟着每支豆的脾气走"
+    }
+  },
+  {
+    "id": "role_consumer_1",
+    "axis": "social",
+    "tier": "role",
+    "roles": [
+      "consumer"
+    ],
+    "q": "周末下午想喝杯咖啡，脑子里先冒出来的画面是哪个？",
+    "poleA": {
+      "t": "窝在自己那把椅子里，手机扣过去，谁都别找我，这半小时是我一个人的。",
+      "L": "O"
+    },
+    "poleB": {
+      "t": "喊上那两个人，一人一杯坐到天黑，咖啡其实是借口，聊到尽兴才算数。",
+      "L": "G"
+    },
+    "mid": {
+      "t": "看人。累了就自己躲一会儿，有劲了就拉人出来，两种都常发生。"
+    },
+    "skip": {
+      "t": "周末下午我多半在睡。醒了那杯，纯属续命，谈不上画面。"
+    }
+  },
+  {
+    "id": "role_consumer_2",
+    "axis": "mood",
+    "tier": "role",
+    "roles": [
+      "consumer"
+    ],
+    "q": "你跟咖啡，更像哪种关系？",
+    "poleA": {
+      "t": "它是我的开关。没喝那杯，眼睛是闭着的，喝完才算正式上线。",
+      "L": "C"
+    },
+    "poleB": {
+      "t": "它是我的台阶。手心捂着杯子那一下，紧绷的肩膀先松了半截。",
+      "L": "W"
+    },
+    "mid": {
+      "t": "早上靠它醒，下午靠它缓，一天里它两副面孔，我都要。"
+    },
+    "skip": {
+      "t": "说不上什么关系。顺手买的，喝完就忘了，下一杯再说。"
+    }
+  },
+  {
+    "id": "role_consumer_3",
+    "axis": "rhythm",
+    "tier": "role",
+    "roles": [
+      "consumer"
+    ],
+    "q": "买到一杯咖啡，到手那一刻你通常是？",
+    "poleA": {
+      "t": "找个位置坐下，杯子摆正，先看一眼再喝第一口，急什么。",
+      "L": "R"
+    },
+    "poleB": {
+      "t": "边走边喝，红灯口灌一大口，到工位基本见底，没空坐。",
+      "L": "E"
+    },
+    "mid": {
+      "t": "有时间就坐着慢慢喝，赶时间就端着走，全看那天几点起。"
+    },
+    "skip": {
+      "t": "我一般让人送到，搁桌上凉到刚好入口再喝，省得烫嘴也省得等。"
+    }
+  },
+  {
+    "id": "role_consumer_4",
+    "axis": "palate",
+    "tier": "role",
+    "roles": [
+      "consumer"
+    ],
+    "q": "进咖啡店，你最常报的是哪句？",
+    "poleA": {
+      "t": "给我一杯不加糖的，豆子什么味我喝什么味，别替我调。",
+      "L": "N"
+    },
+    "poleB": {
+      "t": "来杯厚奶多一点的那种甜的，我就爱那口顺滑下肚的踏实。",
+      "L": "L"
+    },
+    "mid": {
+      "t": "看心情。提神就来杯净的，嘴馋就要杯甜的，两边我都点过无数回。"
+    },
+    "skip": {
+      "t": "我报的永远是同一句——老样子。店员都懂，省得我每次想。"
+    }
+  },
+  {
+    "id": "role_consumer_5",
+    "axis": "social",
+    "tier": "role",
+    "roles": [
+      "consumer"
+    ],
+    "q": "出门带咖啡，你那只杯子是什么来头？",
+    "poleA": {
+      "t": "一只素色随行杯，跟我好几年了，谁也看不出牌子，我自己顺手就行。",
+      "L": "O"
+    },
+    "poleB": {
+      "t": "挑过样子的那只，颜色配当天穿搭，拍出来好看，朋友也问过在哪买。",
+      "L": "G"
+    },
+    "mid": {
+      "t": "通勤用那只耐造的，约人喝才换上好看的，分场合两只换着来。"
+    },
+    "skip": {
+      "t": "我不带杯子。店里给什么纸杯就什么纸杯，喝完就扔，不操这心。"
+    }
+  },
+  {
+    "id": "role_consumer_6",
+    "axis": "mood",
+    "tier": "role",
+    "roles": [
+      "consumer"
+    ],
+    "q": "为一杯日常咖啡多花二十块，什么情况下你觉得值？",
+    "poleA": {
+      "t": "为了那一口实打实的提神，能让我接下来三小时不犯困，这钱花得明白。",
+      "L": "C"
+    },
+    "poleB": {
+      "t": "为了店里那个角落、那束光、坐下来喘口气的工夫，二十块买的是松一口气。",
+      "L": "W"
+    },
+    "mid": {
+      "t": "既要醒得透，也要坐得舒服，两样都占了我才舍得多掏这二十。"
+    },
+    "skip": {
+      "t": "日常我不多花。好喝就行，二十块我留着周末犒劳自己那杯。"
+    }
+  },
+  {
+    "id": "role_consumer_7",
+    "axis": "rhythm",
+    "tier": "role",
+    "roles": [
+      "consumer"
+    ],
+    "q": "你这个人，更愿意在哪儿喝那杯咖啡？",
+    "poleA": {
+      "t": "一家固定的店，固定的座，店员见了我就开始做，那是我一天里踏实的锚。",
+      "L": "R"
+    },
+    "poleB": {
+      "t": "哪儿顺路喝哪儿，今天这家明天那家，反正喝的是这一口，不绑定地方。",
+      "L": "E"
+    },
+    "mid": {
+      "t": "有相熟的常去店，但路过新开的也会拐进去试试，看那天走到哪儿。"
+    },
+    "skip": {
+      "t": "在哪儿喝不重要，跟谁喝才重要。地方是配角，人对了哪家都行。"
+    }
+  },
+  {
+    "id": "role_practitioner_1",
+    "axis": "rhythm",
+    "tier": "role",
+    "roles": [
+      "practitioner"
+    ],
+    "q": "周末第一杯，从磨豆到出杯，你大概花多久？",
+    "poleA": {
+      "t": "水温量好、闷蒸掐表、注水画圈都讲究，半小时起步，过程本身就是我要的那杯。",
+      "L": "R"
+    },
+    "poleB": {
+      "t": "豆子一倒、手冲壶一拎，水开了就上，三分钟搞定，醒了再说讲究。",
+      "L": "E"
+    },
+    "mid": {
+      "t": "工作日随手冲，攒着周末慢慢折腾——看那天醒得早不早。"
+    },
+    "skip": {
+      "t": "我买了定时器和恒温壶，让机器掐表，我只管喝。"
+    }
+  },
+  {
+    "id": "role_practitioner_2",
+    "axis": "explore",
+    "tier": "role",
+    "roles": [
+      "practitioner"
+    ],
+    "q": "手上有支喝惯的豆，店家又上了支没听过产区的新货，你？",
+    "poleA": {
+      "t": "老豆参数都摸熟了，闭眼冲都好喝，新货等下次吧，不想拿早餐冒险。",
+      "L": "F"
+    },
+    "poleB": {
+      "t": "先抓二两新的，今晚就开包试冲，难喝也是一种数据。",
+      "L": "S"
+    },
+    "mid": {
+      "t": "老豆留着保底，新豆当周末的实验课——两包都拿。"
+    },
+    "skip": {
+      "t": "让店里直接给我配个盲盒拼装，省得我自己纠结。"
+    }
+  },
+  {
+    "id": "role_practitioner_3",
+    "axis": "explore",
+    "tier": "role",
+    "roles": [
+      "practitioner"
+    ],
+    "q": "网上有人晒了一套很细的配方，闷蒸、分段、克数全标好了，你？",
+    "poleA": {
+      "t": "先一比一复刻一遍，按他的来，喝准了基准再说要不要改。",
+      "L": "F"
+    },
+    "poleB": {
+      "t": "看一眼思路就好，参数我自己这支豆自己调，别人的舌头不是我的。",
+      "L": "S"
+    },
+    "mid": {
+      "t": "复刻一版打底，第二杯就开始按自己口味挪粉水比。"
+    },
+    "skip": {
+      "t": "配方截图存进相册，然后再也没打开过——你懂的。"
+    }
+  },
+  {
+    "id": "role_practitioner_4",
+    "axis": "roast",
+    "tier": "role",
+    "roles": [
+      "practitioner"
+    ],
+    "q": "同一支耶加，浅烘和深烘两个版本摆面前，先开哪包？",
+    "poleA": {
+      "t": "浅的。水温压低一点、磨细半格，就为把那口花香和酸亮挖干净。",
+      "L": "B"
+    },
+    "poleB": {
+      "t": "深的。沉、稳、有焦糖尾，不用我伺候，闷头一冲就踏实。",
+      "L": "D"
+    },
+    "mid": {
+      "t": "看天，阴雨天想要深的暖，晴天早上开浅的提神——两包都囤。"
+    },
+    "skip": {
+      "t": "中深，懒得在两个极端之间站队，给我个不用纠结的中间档。"
+    }
+  },
+  {
+    "id": "role_practitioner_5",
+    "axis": "palate",
+    "tier": "role",
+    "roles": [
+      "practitioner"
+    ],
+    "q": "一支风味很干净的水洗豆，你打算怎么喝？",
+    "poleA": {
+      "t": "纯黑，热的喝一遍放凉再喝一遍，就听它自己说话，加任何东西都是噪音。",
+      "L": "N"
+    },
+    "poleB": {
+      "t": "冲浓一点兑口冰牛奶，那支豆的果味裹上奶香，是我专门留的喝法。",
+      "L": "L"
+    },
+    "mid": {
+      "t": "头两杯纯饮摸清它的底，喝腻了再拿剩的兑奶换个心情。"
+    },
+    "skip": {
+      "t": "先纯饮记笔记，再做杯 dirty，同一支豆我想听它两种活法。"
+    }
+  },
+  {
+    "id": "role_practitioner_6",
+    "axis": "rhythm",
+    "tier": "role",
+    "roles": [
+      "practitioner"
+    ],
+    "q": "刚到的豆还在养豆期，离风味窗口还差几天，你等不等？",
+    "poleA": {
+      "t": "等。养够日子再开包，排气没走完冲出来发木，急这几天不值当。",
+      "L": "R"
+    },
+    "poleB": {
+      "t": "不等，今天就开。我想喝它每一天的变化，排气重也是它此刻的样子。",
+      "L": "E"
+    },
+    "mid": {
+      "t": "开一包尝个鲜记下状态，剩下的封好等到点再正经冲。"
+    },
+    "skip": {
+      "t": "我冰箱里养着三个批次错峰排期，永远有支正当时的——不用等。"
+    }
+  },
+  {
+    "id": "role_practitioner_7",
+    "axis": "explore",
+    "tier": "role",
+    "roles": [
+      "practitioner"
+    ],
+    "q": "今天冲翻车了，闷蒸塌、流速怪、入口一股涩，你?",
+    "poleA": {
+      "t": "倒掉重来，回想这泡改了哪个变量，下一杯单挑那个量再验一次。",
+      "L": "S"
+    },
+    "poleB": {
+      "t": "捏着鼻子喝完，偶尔翻车正常，明天回到我那套稳的参数就行。",
+      "L": "F"
+    },
+    "mid": {
+      "t": "先记一笔哪里不对，没空复盘就先回老参数，周末再翻出来查。"
+    },
+    "skip": {
+      "t": "翻车的当冰美式救活，加冰加水谁还尝得出涩——下一杯见。"
+    }
+  }
+]
+;
+
+/* ---- 16 型（4 轴命名 [B/D][F/S][R/E][C/W]）---- */
+const TYPES = {
+  BFRC:{name:"晨光校准员", epigraph:"天亮前，先把这一杯调准。", portrait:"你六点半起，磨豆机响之前世界还没醒。同一支浅烘耶加，水温九十二度，称重不差半克。注水的圈是老路子，等它滴完，你也不催。"},
+  BFRW:{name:"窗边茉莉", epigraph:"一支耶加，多站两分钟。", portrait:"你认得出那股茉莉味，于是肯为它在窗边多留一会。豆子三年没换，注水的圈也是老路子。慢，不是因为有空，是你想把这十分钟过细一点。"},
+  BFEC:{name:"通勤挂耳", epigraph:"撕开就走，但豆子得对。", portrait:"你不折腾器具，一包浅烘挂耳塞进背包就出门。但你对那个‘淡’其实很挑——挂耳新不新鲜、淡得对不对，第一口你就尝得出。通勤是没办法，嘴可没将就。"},
+  BFEW:{name:"周末懒人", epigraph:"聪明杯一泡，果香自己来。", portrait:"你爱浅烘那点花果气，但不爱伺候它。聪明杯丢进去，水一倒，刷手机等四分钟。好喝就行，别让一杯咖啡支使你——周末的松弛是你守的底线。"},
+  BSRC:{name:"风味侦探", epigraph:"今天这支，喝出点什么？", portrait:"新到的厌氧日晒先称两克试水，温度计、风味轮摊一桌。你不是为提神，是为‘破案’——这支到底是荔枝还是红酒？喝懂了，这天才算有了个交代。"},
+  BSRW:{name:"豆单收藏家", epigraph:"货架换了三轮，我换了三十支。", portrait:"你抽屉里躺着半开的瑰夏、没喝完的实验批次。每支都郑重其事地冲，闻干香、记日期。每支豆子记着一段时候——哪天买的，那阵子在想什么。"},
+  BSEC:{name:"尝鲜游民", epigraph:"新店开了？那杯没喝过的给我。", portrait:"哪家新出冷萃、哪支限定批次到货，你比谁都先知道——情报先到，人就到。点单永远挑没见过的，处理法越怪越来劲。好奇心是你的咖啡因，消息灵通是你的本事。"},
+  BSEW:{name:"口袋探险", epigraph:"随手一冲，撞上一口惊喜。", portrait:"你买豆全凭眼缘，处理法看不懂也照样下单。法压一闷，冰块一加，对了就笑半天，翻车就当下次故事。冒险不必正襟危坐，松着也能尝遍世界。"},
+  DFRC:{name:"七点闹钟", epigraph:"深烘，不寒暄，把我拽起来。", portrait:"你不要咖啡哄你，要它在早上七点干脆利落地把你拉出被窝。同一支深烘，同样的粉量水温，意式机一压，一口闷下。仪式是为了确定，不是为了浪漫。"},
+  DFRW:{name:"老壶守夜", epigraph:"焦糖那味，陪我到很晚。", portrait:"你有一把用旧的手冲壶，深烘豆是十年的老相好。夜深了慢慢绕水，看它出油。不为提神，就图那股醇厚在嘴里坐一会——它比谁都更像家里那盏不灭的灯。"},
+  DFEC:{name:"续命美式", epigraph:"再续一杯，今天还长。", portrait:"你的深烘是功能件：胶囊机一按，黑、苦、提神，喝完接着干。豆子常年那一款，省心。下午三点那杯不是享受，是把快没电的自己重新插上插座。"},
+  DFEW:{name:"深夜糖罐", epigraph:"苦底子，留一勺甜给自己。", portrait:"你冲深烘从不费劲，挂耳或速溶都行。加班到很晚，兑奶，撇一勺糖。苦是底子，这点甜是你自己加的。"},
+  DSRC:{name:"黑桶炼金", epigraph:"重发酵，重萃取，重口我接得住。", portrait:"你专挑深烘里的猛货——红酒桶、二次发酵，越浓烈越上头。温度曲线压到极致，喝的是那记冲击。咖啡于你是清醒剂，也是肾上腺素，平淡那杯你看不上。"},
+  DSRW:{name:"壁炉调香", epigraph:"深烘也能藏一座果园。", portrait:"你信深烘里还有风味没被烧掉，于是慢慢试各种新处理的深烘豆，称重控温，找那一丝藏在焦苦后的莓果。找到了不声张，自己点头。"},
+  DSEC:{name:"浓缩浪人", epigraph:"哪杯够劲，哪杯就是今天的。", portrait:"你爱深烘的厚，也爱换着花样找刺激：今天 dirty，明天某支猛 SOE，从不为谁早起摆弄器具。要的是那一口够浓够醒神，喝完精神抖擞，继续闯。"},
+  DSEW:{name:"围炉分饮", epigraph:"煮一壶浓的，分你半杯。", portrait:"你随手煮深烘，法压一压，奶一兑，不挑器具只挑人——朋友来了先递出去那杯。爱试些重口的新豆，但乐趣从不在独享。咖啡凉了没关系——本来就是煮给人喝的，不是给自己看的。"}
+};
+
+/* ---- 副人格底色：本味 × 场域 ---- */
+const FRAGMENTS = {
+  NO:{label:"纯饮 · 独处", clause:"黑就行，但那个黑你听得很仔细。"},
+  NG:{label:"纯饮 · 共饮", clause:"你挑豆子，也乐意把那挑剔冲给人喝。"},
+  LO:{label:"调饮 · 独处", clause:"那点甜是你留给自己的，谁都别问。"},
+  LG:{label:"调饮 · 共饮", clause:"一桌人，一壶甜，凉了也聊得下去。"}
+};
+
+/* ---- 烘焙商：全部示意（虚构占位），分布在全国各地，用来演示口味分类与豆款导航；
+        前 7 家挂着示意豆款（见 BEAN_CATS），其余铺开各省做地理分布 ---- */
+const ROASTERS = [
+  {id:"roaster_qiyan", name:"栖盐烘焙所", city:"上海", style:"浅烘为主，专做水洗非洲豆的明亮一派", intro:"他们把耶加和肯尼亚烘得很浅，第一口常被熟客说“这是茶吧”。店主自己也不辩解，只让你再喝一口回甘。"},
+  {id:"roaster_lutai", name:"炉台咖啡", city:"北京", style:"中深烘的均衡派，给日常口粮豆兜底", intro:"没有花活，烘焙曲线常年不大改，主打一个稳。买他们的拼配，闭眼冲都不太会翻车。"},
+  {id:"roaster_anke", name:"暗刻深焙", city:"广州", style:"深烘焦糖巧克力调，做给奶咖和早晨的人", intro:"豆子烘到出油那一档，进牛奶里压得住、不发酸。早上七点那杯醇厚的拿铁，多半是这种豆撑的。"},
+  {id:"roaster_youwu", name:"有雾处理厂", city:"成都", style:"专攻厌氧日晒、二次发酵的风味实验派", intro:"他们最出名的是一支喝出番茄和发酵感的豆子，爱的人很爱、退避的人也不少。来这儿别指望喝到“干净顺口”。"},
+  {id:"roaster_zhaoxi", name:"朝夕慢焙", city:"杭州", style:"浅中之间的水洗与日晒，明亮但不尖", intro:"柑橘日晒是他们的招牌，酸得有边界、不冲。给那些怕浅烘太“瘦”、又不想喝太苦的人。"},
+  {id:"roaster_jingmo", name:"静默低因", city:"深圳", style:"专做瑞士水处理的低咖啡因豆", intro:"他们把低因豆烘得有风味、不寡淡，证明戒不戒咖啡因和好不好喝是两回事。下午想喝又怕睡不着的人会记得这家。"},
+  {id:"roaster_beishan", name:"北山口粮", city:"西安", style:"拼配为主，做意式基底的实在派", intro:"不追单品名气，把意式拼配做厚做稳，给开咖啡店和在家玩意式机的人当底。crema 厚，价格也不端着。"},
+  {id:"roaster_haihe", name:"海河道烘豆", city:"天津", style:"意式拼配、奶咖基底", intro:"专做意式拼配，要的就是奶咖里也压得住的底子。给开社区店的人供豆，焦糖坚果撞上牛奶不返酸，出品稳，要一整箱也不掉链子。"},
+  {id:"roaster_qingcheng", name:"青城炭窑烘焙", city:"呼和浩特", style:"深烘焦糖可可", intro:"只走深烘一条道，焦糖压着可可，苦得干净不带糊味。给口重的北方人备的，黑咖直饮够劲，兑了奶也盖不住。"},
+  {id:"roaster_tiexi", name:"铁西重焙烘豆厂", city:"沈阳", style:"深烘可可、做给奶咖", intro:"只做深烘，可可与焦糖压出的厚底子，是冲着奶咖去的。拿铁里不被牛奶吃掉，余味发苦回甜，给爱重口的人。"},
+  {id:"roaster_songhua", name:"松花江畔豆坊", city:"哈尔滨", style:"中深均衡口粮", intro:"中深烘的日常口粮豆，酸甜居中、不挑器具，手冲意式都稳。一包磨完不心疼，给天天得喝一杯的人备的底料。"},
+  {id:"roaster_jinling", name:"金陵晒场烘焙", city:"南京", style:"日晒柑橘、明亮带甜", intro:"专做日晒，烘到柑橘和红糖之间那点甜就收火，不往深里压。给爱喝明亮酸甜、嫌深烘发闷的人。豆袋上写清产地和烘焙日，新不新鲜自己看。"},
+  {id:"roaster_haiwu", name:"海雾轻烘所", city:"厦门", style:"浅烘花香水洗", intro:"只做浅烘水洗，留住花香和干净的尾韵，不追焦糖味。给手冲党和想喝出产地差异的人。每批小量烘、当周发，量不大，赶的是新鲜。"},
+  {id:"roaster_laoshan", name:"崂山豆工场", city:"青岛", style:"意式拼配、奶咖基底", intro:"专攻意式拼配，配方为奶咖打底，进牛奶不发苦、回甘像可可。给做拿铁澳白的小馆和家用半自动。常年一个配方稳定供货，味道不飘。"},
+  {id:"roaster_zhongzhou", name:"中州烘所", city:"郑州", style:"中深口粮、实在派", intro:"只做中深口粮豆，价钱压得住，量给得够。烘得稳、喝得惯，给每天都要喝、不想为一杯纠结的人。"},
+  {id:"roaster_fajiao", name:"发酵实验台", city:"武汉", style:"厌氧日晒、风味实验", intro:"专啃厌氧日晒和各路发酵处理，每批都标清发酵时长。给爱折腾杯测、想喝点出格风味的人留的。"},
+  {id:"roaster_zhonghuolu", name:"重火炉", city:"长沙", style:"深烘醇厚", intro:"火下得重，专做深烘。醇厚带焦糖底，配奶也压不住。给爱重口、嫌浅烘太飘的老饕。"},
+  {id:"roaster_yongjiang", name:"邕江烘豆所", city:"南宁", style:"浅烘日晒、明亮", intro:"只做浅烘日晒，发酵感和果汁感都顶到上限。给那些嫌深烘太闷、想在杯子里咬到莓果和热带果肉的人——豆子自己挑，回家自己冲。"},
+  {id:"roaster_zhaizi", name:"寨子批次", city:"昆明", style:"云南产区、日晒水洗", intro:"只焙云南豆，日晒走花果、水洗走干净。每批标到具体寨子和处理批次，给想喝懂本地产区、自己在家手冲的人。"},
+  {id:"roaster_yilu", name:"一路深烘", city:"重庆", style:"深烘焦糖", intro:"深烘走到底，焦糖、黑巧、坚果，下沉但不发苦。给爱奶咖、爱浓的人，意式拼配压得住一整杯厚牛奶。"},
+  {id:"roaster_weipi", name:"微批一度", city:"贵阳", style:"浅烘竞技、明亮", intro:"浅烘往酸甜亮里追，常上竞赛级微批次，柑橘、莓果、白花。给认杯测分、爱用手冲喝出产区差别的玩家。"},
+  {id:"roaster_jincheng", name:"金城烘豆铺", city:"兰州", style:"中深均衡", intro:"扎根兰州的小批量烘焙，专攻中深均衡，酸苦都不抢戏，奶咖手冲都立得住。给每天要喝两三杯、不想被风味折腾的人。"},
+  {id:"roaster_tianshan", name:"天山口粮工坊", city:"乌鲁木齐", style:"中深口粮、意式基底", intro:"做的就是耐喝的口粮豆和扎实的意式基底，焦糖坚果底子厚，配奶不发苦。供本地小馆和家用半自动，量大也稳得住。"}
+];
+/* ---- 咖啡店：全部示意（虚构占位），落在真实城市、覆盖全国各省，按 4 种气质归类；
+        vibe 是 CAFE_VIBES 的键，#cafes 页按它分组、结果页可深链到对应气质组 ---- */
+const CAFES = [
+  {id:"cafe_01", name:"东四五支台", city:"北京", province:"北京", vibe:"craft_social", tag:"吧台 · 边冲边问", intro:"东四北小街的窄门脸，吧台只挂五支单品的牌子。店主一边注水一边说今天这支为什么压到八十八度，你嫌磨太细他当场改，不端着也不敷衍。"},
+  {id:"cafe_02", name:"豆落手冲", city:"北京", province:"北京", vibe:"quiet_craft", tag:"靠窗 · 只做手冲", intro:"鼓楼后身一间单座窄铺，不接外卖，不放歌。称豆、注水、最后一滴落进壶里都摆在你眼前，一个人坐到日头偏西也没人来问你续不续。"},
+  {id:"cafe_03", name:"重庆道小院", city:"天津", province:"天津", vibe:"warm_social", tag:"老洋楼 · 拼桌不催", intro:"五大道一栋老洋楼的一层，带个砖地小院。下午都是约人闲扯的街坊，奶咖打得厚实，凉透了也没人撵，几张桌子拼起来能赖一下午。"},
+  {id:"cafe_04", name:"拐角十分钟", city:"石家庄", province:"河北", vibe:"quiet_easy", tag:"地铁口 · 站着喝完", intro:"地铁口拐角一扇小窗，上班路上闪进来给自己留十分钟。豆子两周一换，一杯浅烘配一块原味司康，站在窗边喝完就走，谁也不多看你一眼。"},
+  {id:"cafe_05", name:"南华门街坊", city:"太原", province:"山西", vibe:"warm_social", tag:"社区底商 · 话头管够", intro:"开在老社区底商，门一推熟客先喊一声。咖啡是搭话的由头，店主记得你不加糖，约人坐到拉闸也没人提醒该走了。"},
+  {id:"cafe_06", name:"新华大街口", city:"呼和浩特", province:"内蒙古", vibe:"quiet_easy", tag:"写字楼下 · 拎了就走", intro:"新城区写字楼底下一间小铺，赶早的人顺手拎一杯。深烘做得稳当，奶咖不齁，给自己十分钟，不必正经找个座坐下。"},
+  {id:"cafe_07", name:"灯塔角焙煎所", city:"大连", province:"辽宁", vibe:"quiet_craft", tag:"临海吧台 · 只做手冲", intro:"临海的一间窄铺，吧台前只摆三张高凳。手冲单品按当日烘度现称现磨，注水声盖过店里其余动静。你走神，没人来打断。"},
+  {id:"cafe_08", name:"桂林路口豆铺", city:"长春", province:"吉林", vibe:"warm_social", tag:"街角 · 凉了也照喝", intro:"老巷口的社区馆，常客自带保温杯来续。意式配方偏厚，配一块手作核桃酥。咖啡凉了也照喝，店主只管和你接上前一句没说完的话。"},
+  {id:"cafe_09", name:"中央大街七号萃所", city:"哈尔滨", province:"黑龙江", vibe:"craft_social", tag:"吧台 · 问比例都接得住", intro:"开放吧台，店主边冲边讲今天这支埃塞为什么走细粉。手冲为主，参数全摊在你眼前，比例和水温随你追问。"},
+  {id:"cafe_10", name:"梧桐巷手冲所", city:"上海", province:"上海", vibe:"craft_social", tag:"八个吧台位 · 聊到打烊", intro:"藏在老洋房一楼，八个吧台位对着冲煮台。坐下店主先问今天想喝酸一点还是甜一点，再当面开包称豆。单一产地手冲为主，可以拼浅深两杯同时上，自己比着喝。"},
+  {id:"cafe_11", name:"听枫单品", city:"苏州", province:"江苏", vibe:"quiet_craft", tag:"五个座 · 只做手冲", intro:"巷子尽头一间小铺，五个座，每杯单独手冲。称豆、闷蒸、注水都在你面前一步步走，店主不寒暄。一个人来，对着吧台看完整套动作，杯子见底再起身。"},
+  {id:"cafe_12", name:"颐和路咖啡铺", city:"南京", province:"江苏", vibe:"warm_social", tag:"街角 · 凉了续杯", intro:"梧桐底下的社区馆，常客遛狗顺路进来坐半天。豆子不挑，奶咖配自烤司康是熟客的默认搭配。凉了喊一声就给你续上，没人催你走。"},
+  {id:"cafe_13", name:"南山萃取室", city:"杭州", province:"浙江", vibe:"craft_social", tag:"长吧台 · 闻干香选豆", intro:"西湖边旧仓库改的，长吧台围着冲煮区。点单先聊豆，店主拿三支让你闻干香再定。手冲为主，想学注水节奏，当面给你演一遍手法。"},
+  {id:"cafe_14", name:"甬江一刻", city:"宁波", province:"浙江", vibe:"quiet_easy", tag:"地铁口 · 一杯就走", intro:"地铁口拐角的小窗口，下班顺路接一杯。出杯快，浅烘单品和厚奶拿铁都稳。门口两张高凳，留十分钟看街上人来人往，不必坐正。"},
+  {id:"cafe_15", name:"庐州早出", city:"合肥", province:"安徽", vibe:"quiet_easy", tag:"早班 · 留十分钟", intro:"写字楼背面的窄门面，早班族的固定一站。澳白做得扎实，浅烘日晒当日豆现磨。靠墙一排吧凳，坐着发会儿呆，再拐去上班。"},
+  {id:"cafe_16", name:"鹭岛慢冲", city:"厦门", province:"福建", vibe:"quiet_craft", tag:"六个座 · 单独计时", intro:"老城区的安静小店，只摆六个位。每杯手冲单独称豆、单独计时，吧台后没有多余的话。一个人坐下，看注水从急到缓，杯子到手刚好走神过一回。"},
+  {id:"cafe_17", name:"三坊七巷口", city:"福州", province:"福建", vibe:"warm_social", tag:"巷口 · 站着也聊", intro:"开在老巷口的社区馆，街坊端着杯子站门口聊天。豆子换着来，奶咖配花生酥是本地老客的搭配。约人来坐一下午，谁都不赶你走。"},
+  {id:"cafe_18", name:"赣江边坐坐", city:"南昌", province:"江西", vibe:"warm_social", tag:"临江 · 续杯不催", intro:"江边一楼临街的铺子，午后阳光斜进来，常有人约着打牌喝咖啡。拿铁顺口，手冲也有，凉了喊一声就续。来这儿，主要图一个不被赶的下午。"},
+  {id:"cafe_19", name:"栈桥侧门", city:"青岛", province:"山东", vibe:"quiet_easy", tag:"海边 · 长凳对海", intro:"海风灌进来的临街小窗，散步路上接一杯刚好。浅烘水洗和厚奶拿铁都稳，门口一条长凳对着海。坐十分钟，看完一趟潮水再走。"},
+  {id:"cafe_20", name:"院门口咖啡", city:"郑州", province:"河南", vibe:"warm_social", tag:"家属院门口 · 坐到打烊", intro:"开在老城家属院门口，街坊端着自家杯来续杯。中深拼配打底，奶咖管够，凉了也没人催你走。"},
+  {id:"cafe_21", name:"汉口萃取台", city:"武汉", province:"湖北", vibe:"craft_social", tag:"六个吧台座 · 边冲边掰扯", intro:"只有六个吧台座，店主一边冲一边跟你掰扯水温和粉水比。单一产地为主，想试新豆，开口就给你换一支。"},
+  {id:"cafe_22", name:"窗口一杯", city:"武汉", province:"湖北", vibe:"quiet_easy", tag:"地铁口拐角 · 站着也行", intro:"地铁口拐角的小窗口，赶班的人买一杯接着走。豆子两三支轮换，浅烘做澳白，赶时间也行，想站着慢慢喝也没人赶。"},
+  {id:"cafe_23", name:"湘江二楼", city:"长沙", province:"湖南", vibe:"warm_social", tag:"老楼二层 · 约人坐一下午", intro:"湘江边的两层老楼，楼上能坐一下午。豆子换得勤，常有人拼桌聊豆，话比咖啡还上头。"},
+  {id:"cafe_24", name:"西关单品", city:"广州", province:"广东", vibe:"craft_social", tag:"骑楼吧台 · 边称豆边掰扯", intro:"老西关骑楼底下一张窄吧台，只做单品手冲。坐下来，店主一手压秤一手和你争水温和注水的快慢，隔壁凳子上常坐着听了三年的街坊。"},
+  {id:"cafe_25", name:"折叠豆场", city:"深圳", province:"广东", vibe:"quiet_craft", tag:"八个座 · 看完整段冲煮", intro:"科技园写字楼背面，八个座，进门没人招呼你。研磨、闷蒸、分段注水全摆在眼前，看到走神也没人提醒。喝完，回那堆代码里。"},
+  {id:"cafe_26", name:"骑楼拐角", city:"海口", province:"海南", vibe:"quiet_easy", tag:"外带窗口 · 站着喝完", intro:"得胜沙路骑楼拐角，一个外带窗口加两张高脚凳。海风带咸，咖啡走干净不走甜腻，给自己抠出十分钟，站着喝完也不掉份。"},
+  {id:"cafe_27", name:"漓岸十分", city:"桂林", province:"广西", vibe:"quiet_easy", tag:"通勤窗口 · 一杯不必落座", intro:"正阳路口一个小窗口，上班顺脚拐进来。豆子换得勤，浅烘明亮的居多，一杯递到手十分钟，不必坐下，也不必开口。"},
+  {id:"cafe_28", name:"天井两层", city:"成都", province:"四川", vibe:"warm_social", tag:"院坝矮桌 · 坐到打烊", intro:"老巷尽头的两层旧楼，天井摆四张矮桌。豆子换得勤，奶咖手稳，邻居遛狗顺手端一杯，凉了续杯不收钱也不催你走。"},
+  {id:"cafe_29", name:"分段注水", city:"成都", province:"四川", vibe:"craft_social", tag:"长吧台 · 聊到水温", intro:"一条长吧台，店主把每支单品的冲煮笔记摊在你面前。你问一句研磨，他能跟你掰扯半小时分段注水，浅烘云南挂耳常驻。"},
+  {id:"cafe_30", name:"梯坎喊一声", city:"重庆", province:"重庆", vibe:"warm_social", tag:"露台对江雾 · 久坐不催", intro:"爬几级梯坎才到，露台正对江雾。街坊把这儿当客厅，谈生意吵架都在这桌，深烘拼配配冰美式，杯空了也没人撵。"},
+  {id:"cafe_31", name:"当季杯测", city:"贵阳", province:"贵州", vibe:"craft_social", tag:"吧台 · 一起对豆", intro:"店主自己跑产区收豆，吧台后摆着当季杯测样。坐下来对比两支日晒，你说太酸还是太薄，他认真听，再帮你调下一杯。"},
+  {id:"cafe_32", name:"六座听水", city:"昆明", province:"云南", vibe:"quiet_craft", tag:"六座 · 不放音乐", intro:"六个座，不放音乐只留水声。称豆、闷蒸、分段注水看得见每一步，没人搭话。一支高黎贡浅烘，喝完一上午就过去了。"},
+  {id:"cafe_33", name:"拐角一磨", city:"大理", province:"云南", vibe:"quiet_easy", tag:"路边站喝 · 留十分钟", intro:"去菜场的拐角，站着也能喝。一台磨、一壶水，浅烘日晒做成挂耳带走。给自己留十分钟，看苍山云走，不必落座。"},
+  {id:"cafe_34", name:"转经小窗", city:"拉萨", province:"西藏", vibe:"quiet_easy", tag:"靠墙晒太阳 · 一个人也好", intro:"转经道边的小窗口，高原水温压得低。一杯深烘配青稞饼干，靠墙晒着太阳喝完，再汇进人流接着走，不耽误事。"},
+  {id:"cafe_35", name:"城墙根手冲所", city:"西安", province:"陕西", vibe:"quiet_craft", tag:"六个吧台位 · 单豆单计时", intro:"只有六个吧台位，每杯单独称豆、单独计时，店主背对你磨豆，不寒暄。注水的每一圈你都看得见，水声盖过外面的车流。"},
+  {id:"cafe_36", name:"黄河边咖啡馆", city:"兰州", province:"甘肃", vibe:"warm_social", tag:"老楼一层 · 凉了也没人催", intro:"老楼一层，木桌长椅，常客自己起身续杯。下午挤满约人聊天的街坊，咖啡凉了也没人提醒你，招牌是顺口的中深拼配。"},
+  {id:"cafe_37", name:"南川路一杯", city:"西宁", province:"青海", vibe:"quiet_easy", tag:"出杯快 · 站着喝十分钟", intro:"通勤路上拐个弯就到，出杯快，一杯澳白带回工位刚好不烫嘴。想坐有两张高凳，给自己留十分钟，不必正经坐下。"},
+  {id:"cafe_38", name:"唐徕渠角落", city:"银川", province:"宁夏", vibe:"quiet_easy", tag:"临街小窗 · 靠墙站着喝", intro:"临街小窗口，豆子三款轮着上，老板记得你常喝哪支。买完靠墙窗台一站，看几眼路口的车，喝完再走，没人多问。"},
+  {id:"cafe_39", name:"明园会客厅", city:"乌鲁木齐", province:"新疆", vibe:"warm_social", tag:"巷子深处 · 约人办事都来这", intro:"巷子深处的两层小馆，沙发软，说话声不压着。本地人约人办事爱选这儿，咖啡是话头，中深口粮管续，待一下午也不尴尬。"}
+];
+const BEAN_CATS = [
+  {id:"cat_light_floral_washed", label:"明亮花香 · 浅烘水洗", blurb:"被说“这是茶吧”也无所谓，那股茉莉柑橘是它的本事。", beans:[
+    {name:"栖盐 耶加 科契尔 水洗", roasterId:"roaster_qiyan", note:"茉莉和柠檬皮在前，凉下来回甘更明显，第一口容易被当成花茶。"},
+    {name:"栖盐 肯尼亚 AA 水洗", roasterId:"roaster_qiyan", note:"黑加仑和番茄的酸质很有劲，比耶加更结实一点。"},
+    {name:"朝夕 卢旺达 水洗", roasterId:"roaster_zhaoxi", note:"红茶感加柑橘，浅烘里偏温和的一支，怕酸的人也能接住。"}
+  ]},
+  {id:"cat_citrus_natural", label:"柑橘日晒 · 明亮带甜", blurb:"日晒的甜把酸圈起来，明亮但不尖。", beans:[
+    {name:"朝夕 耶加 日晒", roasterId:"roaster_zhaoxi", note:"橙子和莓果的甜更厚，酸有边界、不冲。"},
+    {name:"朝夕 埃塞 古吉 日晒", roasterId:"roaster_zhaoxi", note:"热的时候像果汁，建议别冲太烫，香气会更干净。"},
+    {name:"栖盐 西达摩 日晒", roasterId:"roaster_qiyan", note:"比同店水洗款柔，给想从浅烘入门又怕酸的人。"}
+  ]},
+  {id:"cat_balanced_medium", label:"均衡中烘 · 闭眼不翻车", blurb:"没有花活，烘焙常年不大改，主打一个稳。", beans:[
+    {name:"炉台 哥伦比亚 中烘", roasterId:"roaster_lutai", note:"坚果焦糖打底，酸甜苦都在中间，日常口粮的安全牌。"},
+    {name:"炉台 巴西 中烘", roasterId:"roaster_lutai", note:"醇度够、几乎不酸，手冲法压都好伺候。"},
+    {name:"北山 危地马拉 中烘", roasterId:"roaster_beishan", note:"巧克力和一点橙皮，价格实在，适合天天喝。"}
+  ]},
+  {id:"cat_dark_cocoa", label:"醇厚可可 · 深烘", blurb:"深烘，不寒暄，直接给你需要的那点苦。", beans:[
+    {name:"暗刻 曼特宁 深烘", roasterId:"roaster_anke", note:"黑巧和木质感，醇得住，黑着喝也压得稳。"},
+    {name:"暗刻 拼配 深焙", roasterId:"roaster_anke", note:"焦糖可可调，进牛奶里不发酸，早晨那杯多半靠它。"},
+    {name:"炉台 意式深烘", roasterId:"roaster_lutai", note:"苦得干脆、余韵带甜，单喝或做美式都行。"}
+  ]},
+  {id:"cat_milk_base_blend", label:"奶咖基底 · 拼配", blurb:"为牛奶而生，进奶里要厚、要稳、不发酸。", beans:[
+    {name:"北山 意式拼配 经典", roasterId:"roaster_beishan", note:"crema 厚、坚果巧克力调，拉花和口感都照顾到。"},
+    {name:"暗刻 奶咖专用拼配", roasterId:"roaster_anke", note:"深一点的烘度，压在奶里依旧能听见咖啡。"},
+    {name:"炉台 拿铁基底", roasterId:"roaster_lutai", note:"甜感偏焦糖，给生椰、dirty 这类调饮当底也合适。"}
+  ]},
+  {id:"cat_experimental", label:"风味创意 · 厌氧发酵", blurb:"想被风味吓一跳的来，要干净顺口的请绕道。", beans:[
+    {name:"有雾 哥伦比亚 厌氧日晒", roasterId:"roaster_youwu", note:"热带水果加发酵感很冲，爱的人很爱、退避的人也不少。"},
+    {name:"有雾 SOE 二次发酵", roasterId:"roaster_youwu", note:"做意式能喝出番茄和酱油感，留给想炫技的那口。"},
+    {name:"有雾 红酒桶处理", roasterId:"roaster_youwu", note:"酒香明显、争议也大，建议先少量试，别一上来囤一公斤。"}
+  ]},
+  {id:"cat_decaf", label:"低咖啡因 · 瑞士水处理", blurb:"戒不戒咖啡因，和好不好喝是两回事。", beans:[
+    {name:"静默 哥伦比亚 低因", roasterId:"roaster_jingmo", note:"瑞士水处理，低咖啡因但风味没掉太多，坚果可可调。"},
+    {name:"静默 耶加 低因", roasterId:"roaster_jingmo", note:"保留了一点花香的低因豆，下午想喝又怕影响睡眠时的选择。"},
+    {name:"静默 深烘 低因", roasterId:"roaster_jingmo", note:"低咖啡因的深烘款，做奶咖也能有醇厚感。咖啡因摄入相关健康问题请咨询医生。"}
+  ]}
+];
+const EQUIP_CATS = [
+  {id:"equip_immersion", label:"浸泡式 · 省事不折腾", blurb:"泡一泡就能喝，好喝就行、别折腾的那一派。", items:[
+    {name:"法压壶", note:"粗粉、热水、等四分钟下压，免技术流的代表，醇度高。"},
+    {name:"聪明杯", note:"浸泡完一放就滤干净，新手最难翻车的器具。"},
+    {name:"挂耳滤包", note:"撕开一冲就走，通勤出差的妥协解，将就但不凑合。"}
+  ]},
+  {id:"equip_pourover", label:"手冲 · 讲究过程", blurb:"闷蒸几秒、水流绕到哪，味道里都听得见。", items:[
+    {name:"V60 锥形滤杯", note:"流速快、容错低，注水手法直接写在味道里。"},
+    {name:"Kalita 蛋糕杯", note:"平底三孔更稳，对手法宽容一些，适合刚开始练。"},
+    {name:"手摇磨豆机", note:"现磨现冲是手冲的起点，研磨均匀度比器型更影响成败。"},
+    {name:"细嘴手冲壶", note:"控制水流粗细和落点，绕圈闷蒸全靠它。"}
+  ]},
+  {id:"equip_espresso", label:"意式 · 一杯浓缩起步", blurb:"机器压出来的那口浓，奶咖和拼配的主场。", items:[
+    {name:"半自动意式机", note:"能调粉量和压力，奶咖和纯浓缩都靠它出杯。"},
+    {name:"意式磨豆机", note:"出粉细、要无极调节，意式成败一半在磨上。"},
+    {name:"奶缸与温度计", note:"打奶泡控温用，拉花是天鹅还是一坨从这里开始。"}
+  ]},
+  {id:"equip_coldbrew", label:"冷萃 · 夏天的命", blurb:"冰的、顺口不酸，热起来再补这一类。", items:[
+    {name:"冷萃壶", note:"粗粉泡冷水放冰箱十几个小时，低酸顺口，一次做一壶。"},
+    {name:"冰滴塔", note:"一滴一滴慢萃，风味更立体，做起来也更慢，急不得。"}
+  ]}
+];
+const ROASTER_BY_ID = {}; ROASTERS.forEach(r=>ROASTER_BY_ID[r.id]=r);
+const CAFE_BY_ID = {}; CAFES.forEach(c=>CAFE_BY_ID[c.id]=c);
+const BEANCAT_BY_ID = {}; BEAN_CATS.forEach(c=>BEANCAT_BY_ID[c.id]=c);
+const EQUIPCAT_BY_ID = {}; EQUIP_CATS.forEach(c=>EQUIPCAT_BY_ID[c.id]=c);
+
+/* ---- 推荐：从轴分数「算」出品类，不是每型手写 ---- */
+function pickBean(s){
+  if(s.palate>0) return "cat_milk_base_blend";
+  if(s.explore>0) return "cat_experimental";
+  if(s.roast>0) return "cat_dark_cocoa";
+  if(s.roast<0) return s.mood>0 ? "cat_citrus_natural" : "cat_light_floral_washed";
+  return "cat_balanced_medium";
+}
+function pickEquip(s){
+  if(s.palate>0) return s.rhythm<0 ? "equip_espresso" : "equip_immersion";
+  return s.rhythm<0 ? "equip_pourover" : "equip_immersion";
+}
+/* 咖啡店推荐给「气质」而非点名某家真实店——真实门店是否合拍要本人去坐，算法不替真实品牌背书 */
+const CAFE_VIBES = {
+  craft_social:{label:"愿意坐下聊冲煮的吧台", blurb:"对着吧台、和店主或懂的人搭两句，手冲为主，技术感和交流感都在。"},
+  warm_social:{label:"热闹好坐的社区馆", blurb:"咖啡是话头，约人慢慢待得住，凉了也没人催。"},
+  quiet_craft:{label:"一个人对着吧台的安静", blurb:"看得见每一步冲煮、没人打扰你走神的小店。"},
+  quiet_easy:{label:"顺路就能独处的一杯", blurb:"通勤动线上的好店，给自己留十分钟，不必正襟危坐。"}
+};
+function pickCafeVibe(s){
+  if(s.social>0) return s.rhythm<0 ? "craft_social" : "warm_social";
+  return s.rhythm<0 ? "quiet_craft" : "quiet_easy";
+}
+function recommend(s){ return {beanCatId:pickBean(s), equipCatId:pickEquip(s), cafeVibe:pickCafeVibe(s)}; }
+
+/* ---- 事件追踪：GA4（若配置）+ 本机镜像 ---- */
+function track(ev, props){
+  props = props || {};
+  try{ if(window.gtag) gtag('event', ev, props); }catch(e){}
+  try{
+    const k="cti_events", arr=JSON.parse(localStorage.getItem(k)||"[]");
+    arr.push({ev, props, t:Date.now()});
+    try{ localStorage.setItem(k, JSON.stringify(arr.slice(-3000))); }
+    catch(e){ try{ localStorage.setItem(k, JSON.stringify(arr.slice(-500))); }catch(_){} }
+  }catch(e){}
+}
+(function initGA(){
+  if(!CONFIG.GA4_ID || CONFIG.GA4_ID.indexOf("XXXX")>=0) return;
+  const s=document.createElement('script'); s.async=true;
+  s.src="https://www.googletagmanager.com/gtag/js?id="+CONFIG.GA4_ID; document.head.appendChild(s);
+  window.dataLayer=window.dataLayer||[]; window.gtag=function(){dataLayer.push(arguments)};
+  gtag('js', new Date()); gtag('config', CONFIG.GA4_ID);
+})();
+
+/* ---- 题库分组 ---- */
+const CORE = QUESTIONS.filter(q=>q.tier==="core");
+const DEEP_SHARED = QUESTIONS.filter(q=>q.tier==="deep");
+const ROLE_BANK = {}; ROLES.forEach(r=>ROLE_BANK[r.id]=[]);
+QUESTIONS.filter(q=>q.tier==="role").forEach(q=>(q.roles||[]).forEach(rid=>{ if(ROLE_BANK[rid]) ROLE_BANK[rid].push(q); }));
+const DEEP_CAP = 35;
+
+/* ---- 状态机 ---- */
+const stage = document.getElementById('stage');
+const state = { roles:new Set(), depth:"simple", qset:[], qi:0, answers:[], axisCount:{}, result:null };
+
+function esc(s){ return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+/* 设同值 hash 不会触发 hashchange——这里强制重渲，堵掉「返回到当前 hash 看似没反应」的死角 */
+function go(h){ if(location.hash.replace(/^#/,'')===h){ route(); } else { location.hash = h; } }
+function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=(Math.random()*(i+1))|0; [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function bindCommon(){
+  stage.querySelectorAll('[data-nav]').forEach(el=>el.onclick=()=>go(el.dataset.nav));
+  stage.querySelectorAll('[data-intent]').forEach(el=>el.onclick=()=>{
+    track('intent', {kind:el.dataset.intent, target:el.dataset.target||"", roaster:el.dataset.roaster||""});
+    el.textContent="已记下你的兴趣 ✓"; el.disabled=true; el.classList.add('done');
+  });
+}
+function render(html){ stage.innerHTML=html; stage.classList.remove('fade'); void stage.offsetWidth; stage.classList.add('fade'); bindCommon(); }
+
+/* ---- 起始：难度优先；简单测不选角色，深度测才显示角色多选 ---- */
+function screenIntro(){
+  const chips = ROLES.map(r=>{
+    const on = state.roles.has(r.id) ? ' on':'';
+    return `<button class="chip2${on}" data-role="${r.id}"><b>${r.name}</b><span class="h">${r.hint}</span></button>`;
+  }).join('');
+  const deep = state.depth==='deep';
+  render(`
+    <div class="eyebrow">COFFEE JAM · 前瞻小测试</div>
+    <h1 class="mt2">CoffeeTI</h1>
+    <p class="lede mt2">你是哪一种<br/>喝咖啡的人？</p>
+    <p class="muted mt2">这不是问你懂不懂咖啡，是问你怎么过日子。<br/>凭直觉选，没有标准答案——每题都能折中，也能跳过。</p>
+
+    <p class="label-sm">想测多深？</p>
+    <div class="seg" id="seg">
+      <button data-depth="simple" class="${!deep?'on':''}">简单 · 约 1 分钟</button>
+      <button data-depth="deep" class="${deep?'on':''}">深度 · 选角色，25–35 题</button>
+    </div>
+
+    <div id="roleblock" style="${deep?'':'display:none'}">
+      <p class="label-sm">你大概是——（可多选，按角色给你加专属题）</p>
+      <div class="roles">${chips}</div>
+    </div>
+
+    <div class="mt3"><button class="cta" id="start">开始测试</button></div>
+    <p class="faint mt2">测试匿名 · 无需登录 · 结果仅供参考娱乐
+      &nbsp;·&nbsp;<button class="quiet" data-nav="cats/bean" style="font-size:.82rem">先逛逛豆子 →</button></p>
+  `);
+  stage.querySelectorAll('[data-role]').forEach(b=>b.onclick=()=>{
+    const id=b.dataset.role; state.roles.has(id)?state.roles.delete(id):state.roles.add(id); b.classList.toggle('on');
+  });
+  stage.querySelectorAll('#seg button').forEach(b=>b.onclick=()=>{
+    state.depth=b.dataset.depth;
+    stage.querySelectorAll('#seg button').forEach(x=>x.classList.toggle('on', x===b));
+    const rb=document.getElementById('roleblock'); if(rb) rb.style.display = state.depth==='deep' ? '' : 'none';
+  });
+  document.getElementById('start').onclick=startQuiz;
+}
+
+/* ---- 选题：简单=CORE；深度=CORE+DEEP_SHARED(基线25) + 按角色采样最多10题，clamp 到 25–35，保轴均衡 ---- */
+function balanceByAxis(qs){
+  const by={}; qs.forEach(q=>{ (by[q.axis]=by[q.axis]||[]).push(q); });
+  const axes=Object.keys(by); axes.forEach(a=>shuffle(by[a]));
+  const out=[]; let added=true;
+  while(added){ added=false; axes.forEach(a=>{ if(by[a].length){ out.push(by[a].shift()); added=true; } }); }
+  return out;
+}
+function buildQuestionSet(){
+  let qs;
+  if(state.depth==="simple"){
+    qs = shuffle(CORE.slice());
+  } else {
+    const base = CORE.concat(DEEP_SHARED);
+    const seen = new Set(base.map(q=>q.id));
+    let roleQs = [];
+    state.roles.forEach(rid=>(ROLE_BANK[rid]||[]).forEach(q=>{ if(!seen.has(q.id)){ seen.add(q.id); roleQs.push(q); } }));
+    const slots = Math.max(0, DEEP_CAP - base.length);
+    roleQs = balanceByAxis(roleQs).slice(0, slots);
+    qs = shuffle(base.concat(roleQs));
+  }
+  state.qset=qs; state.qi=0; state.answers=[];
+  state.axisCount={}; qs.forEach(q=>state.axisCount[q.axis]=(state.axisCount[q.axis]||0)+1);
+}
+function startQuiz(){
+  buildQuestionSet();
+  track('quiz_start', {depth:state.depth, roles:[...state.roles].join('|')||"none", count:state.qset.length});
+  go('quiz');   // give the quiz a history entry so 移动端边缘返回手势落回 intro，而不是直接离站
+}
+
+function screenQuestion(){
+  const Q = state.qset[state.qi], n = state.qset.length;
+  const dots = state.qset.map((_,i)=>`<i class="${i<=state.qi?'on':''}"></i>`).join('');
+  const tier = TIER_LABEL[Q.tier] ? `<span class="qtier">${TIER_LABEL[Q.tier]}</span>` : '';
+  const poles = (Math.random()<.5) ? [Q.poleA,Q.poleB] : [Q.poleB,Q.poleA];
+  const opts = [
+    {t:poles[0].t, L:poles[0].L},
+    {t:poles[1].t, L:poles[1].L},
+    {t:Q.mid.t,  L:"", soft:true},
+    {t:Q.skip.t, L:"", soft:true}
+  ];
+  const optHtml = opts.map(o=>`<button class="opt${o.soft?' soft':''}" data-l="${o.L||''}">${esc(o.t)}</button>`).join('');
+  render(`
+    <div class="prog">${dots}</div>
+    <div class="qcount">${String(state.qi+1).padStart(2,'0')} / ${n}${tier}</div>
+    <h2>${esc(Q.q)}</h2>
+    <div class="mt2">${optHtml}</div>
+  `);
+  stage.querySelectorAll('.opt').forEach(btn=>btn.onclick=()=>{
+    state.answers[state.qi] = btn.dataset.l || null; state.qi++;
+    (state.qi<n) ? screenQuestion() : finishQuiz();
+  });
+}
+
+function finishQuiz(){
+  const s={roast:0,explore:0,rhythm:0,mood:0,palate:0,social:0};
+  state.answers.forEach(L=>{ if(L){ const m=AXIS[L]; if(m) s[m[0]]+=m[1]; } });
+  const code=(s.roast>0?"D":"B")+(s.explore>0?"S":"F")+(s.rhythm>0?"E":"R")+(s.mood>0?"W":"C");
+  const pal=s.palate>0?"L":"N", soc=s.social>0?"G":"O";
+  state.result={code, scores:s, combo:pal+soc};
+  track('quiz_complete', {type:code, type_name:TYPES[code].name, palate:pal, social:soc, depth:state.depth, roles:[...state.roles].join('|')||"none", count:state.qset.length});
+  go('result');   // go() 已处理「当前已是 #result」的同值重渲，无需再分支
+}
+
+function axisBar(ax, score, cnt){
+  const [lo,hi]=AXIS_FULL[ax], c=cnt||1;
+  const pct=Math.max(6, Math.min(94, ((score+c)/(2*c))*100));
+  const lp=score<0?'pick':'', rp=score>0?'pick':'';
+  return `<div class="axis">
+    <div class="lab"><span class="${lp}">${lo}</span><span class="${rp}">${hi}</span></div>
+    <div class="track"><span class="dot" style="left:${pct}%"></span></div>
+  </div>`;
+}
+
+function screenResult(){
+  const {code, scores, combo} = state.result;
+  const T = TYPES[code], frag = FRAGMENTS[combo], rec = recommend(scores);
+  const bean = BEANCAT_BY_ID[rec.beanCatId], equip = EQUIPCAT_BY_ID[rec.equipCatId], vibe = CAFE_VIBES[rec.cafeVibe];
+  const bars = AXIS_ORDER.map(a=>axisBar(a, scores[a], state.axisCount[a])).join('');
+  render(`
+    <div class="eyebrow">你的咖啡口味人格</div>
+    <div class="code mt2">${code.split('').join(' ')}</div>
+    <h1 class="mt1" style="font-size:clamp(2.2rem,8vw,3.4rem)">${esc(T.name)}</h1>
+    <p class="subtype">${esc(frag.label)} — ${esc(frag.clause)}</p>
+    <p class="lede mt2">${esc(T.epigraph)}</p>
+    <p class="muted mt2">${esc(T.portrait)}</p>
+
+    <div class="axes">${bars}</div>
+
+    <div class="rec">
+      <div class="kind">为你而选的豆子<span class="placeholder-tag">示意</span></div>
+      <h3>${esc(bean.label)}</h3>
+      <p class="desc">${esc(bean.blurb)}</p>
+      <button class="nav-link" data-nav="cat/bean/${bean.id}">看看这一类豆子，和做它的烘焙商 →</button>
+    </div>
+    <div class="rec">
+      <div class="kind">顺手的器具<span class="placeholder-tag">示意</span></div>
+      <h3>${esc(equip.label)}</h3>
+      <p class="desc">${esc(equip.blurb)}</p>
+      <button class="nav-link" data-nav="cat/equip/${equip.id}">看看这一类器具 →</button>
+    </div>
+    <div class="rec">
+      <div class="kind">适合你的咖啡馆气质<span class="placeholder-tag">示意</span></div>
+      <h3>${esc(vibe.label)}</h3>
+      <p class="desc">${esc(vibe.blurb)}</p>
+      <button class="nav-link" data-nav="cafes/${rec.cafeVibe}">去看看这一类气质的店 →</button>
+    </div>
+
+    <div class="quiet-links">
+      <button class="quiet" data-nav="cats/bean">浏览全部豆子分类</button>
+      <button class="quiet" data-nav="cats/equip">全部器具</button>
+      <button class="quiet" data-nav="roasters">烘焙商</button>
+      <button class="quiet" data-nav="cafes">咖啡店</button>
+    </div>
+
+    <div class="wl">
+      <p class="muted">这只是前瞻版。完整的 Coffee Jam 会用你<strong>真实的冲煮记录</strong>，越喝越懂你。</p>
+      <div class="wl-row">
+        <input id="wl-email" type="email" placeholder="留个邮箱，第一时间体验完整版" inputmode="email" />
+        <button class="cta" id="wl-btn" style="padding:.8rem 1.8rem">我想要</button>
+      </div>
+      <p class="faint mt1" id="wl-msg">邮箱仅用于上线时通知你一次，不作他用、不发广告。</p>
+    </div>
+
+    <div class="actions">
+      <button class="cta" id="share" style="padding:.8rem 2rem">分享我的咖啡人格</button>
+      <button class="ghost" id="retry">重新测试</button>
+    </div>
+  `);
+  document.getElementById('retry').onclick=()=>{
+    track('retry'); state.result=null; state.qset=[]; state.answers=[]; state.qi=0;
+    try{ history.replaceState(null,'','#'); }catch(e){}  // 原地把 #result 换成 #，别在历史里留一条会被二次改写的失效结果
+    screenIntro();
+  };
+  document.getElementById('share').onclick=()=>doShare(code, T);
+  document.getElementById('wl-btn').onclick=()=>submitWaitlist(code);
+}
+
+function doShare(code, T){
+  track('share_click', {type:code});
+  const text = `我的咖啡口味人格（前瞻测）是「${T.name}」(${code})，来测测你的：`;
+  const url = CONFIG.SHARE_URL;
+  if(navigator.share){ navigator.share({title:"CoffeeTI · 咖啡口味人格", text, url}).catch(()=>{}); return; }
+  const b=document.getElementById('share');
+  const reset=()=>setTimeout(()=>{ b.textContent="分享我的咖啡人格"; },2000);
+  const done=()=>{ b.textContent="链接已复制 ✓"; setTimeout(()=>{ b.textContent="分享我的咖啡人格"; },1800); };
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text+" "+url).then(done).catch(()=>{ b.textContent="复制失败，请手动复制地址栏"; reset(); });
+  } else { b.textContent="请手动复制地址栏链接"; reset(); }
+}
+
+function submitWaitlist(code){
+  const inp=document.getElementById('wl-email'), btn=document.getElementById('wl-btn'), msg=document.getElementById('wl-msg');
+  const email=(inp.value||"").trim();
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ msg.textContent="邮箱格式看起来不太对，再检查一下？"; msg.style.color="var(--ink)"; return; }
+  const ok=()=>{ inp.disabled=true; btn.disabled=true; btn.textContent="已收到 ✓";
+    track('waitlist_submit',{type:code});
+    msg.textContent="谢谢——上线时第一个告诉你。"; msg.style.color="var(--ink-soft)"; };
+  const fail=()=>{ btn.disabled=false; btn.textContent="我想要";
+    msg.textContent="没存上，网络好点再试一次？"; msg.style.color="var(--ink)"; };
+  if(CONFIG.WAITLIST_ENDPOINT){
+    btn.disabled=true; btn.textContent="提交中…";
+    fetch(CONFIG.WAITLIST_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email,type:code})})
+      .then(r=>{ r.ok ? ok() : fail(); }).catch(fail);
+  } else { ok(); }  // 未配置端点：仅记录意愿事件（邮箱不会被保存，见 README）
+}
+
+/* ---- 目录浏览（全部示意：虚构占位，用于演示口味分类与门店气质导航）---- */
+const DEMAND_NOTE = "目录里的烘焙商与咖啡店都是示意（虚构占位），用来演示口味分类与门店气质怎么导航，分布在全国各地。本页刻意不跳转购买——我们想先把这件事替你记下来。";
+function backToResult(){ return state.result ? "result" : ""; }
+
+function screenBeanCats(){
+  track('view_bean_cats');
+  const rows = BEAN_CATS.map(c=>`<div class="item">
+    <div class="nm">${esc(c.label)}</div>
+    <div class="note">${esc(c.blurb)}</div>
+    <div class="meta"><button class="nav-link" data-nav="cat/bean/${c.id}">看这一类（${c.beans.length} 支）→</button></div>
+  </div>`).join('');
+  render(`
+    <div class="crumb"><button data-nav="${backToResult()}">← 返回</button><span>·</span><span>豆子 · 示意目录</span></div>
+    <div class="eyebrow">豆子分类</div>
+    <h2 class="mt2">按口味找豆子</h2>
+    <div class="list">${rows}</div>
+    <div class="disclaimer">${esc(DEMAND_NOTE)}</div>
+  `);
+}
+function screenBeanCat(id){
+  const c = BEANCAT_BY_ID[id]; if(!c) return screenBeanCats();
+  track('view_bean_cat', {cat:id, label:c.label});
+  const rows = c.beans.map(b=>{
+    const r = ROASTER_BY_ID[b.roasterId];
+    const rtag = r ? `<button class="tag-link" data-nav="roaster/${r.id}">${esc(r.name)}${r.city?' · '+esc(r.city):''} →</button>` : '';
+    return `<div class="item">
+      <div class="nm">${esc(b.name)}</div>
+      <div class="note">${esc(b.note)}</div>
+      <div class="meta">${rtag}
+        <button class="nav-link" data-intent="bean" data-target="${esc(b.name)}" data-roaster="${esc(b.roasterId)}">想喝这支 →</button></div>
+    </div>`;
+  }).join('');
+  render(`
+    <div class="crumb"><button data-nav="${backToResult()}">← 返回</button><span>·</span>
+      <button data-nav="cats/bean">豆子分类</button><span>·</span><span>${esc(c.label)}</span></div>
+    <div class="eyebrow">豆子 · 示意目录</div>
+    <h2 class="mt2">${esc(c.label)}</h2>
+    <p class="muted mt1">${esc(c.blurb)}</p>
+    <div class="list">${rows}</div>
+    <div class="disclaimer">${esc(DEMAND_NOTE)}</div>
+  `);
+}
+function screenEquipCats(){
+  track('view_equip_cats');
+  const rows = EQUIP_CATS.map(c=>`<div class="item">
+    <div class="nm">${esc(c.label)}</div>
+    <div class="note">${esc(c.blurb)}</div>
+    <div class="meta"><button class="nav-link" data-nav="cat/equip/${c.id}">看这一类（${c.items.length} 件）→</button></div>
+  </div>`).join('');
+  render(`
+    <div class="crumb"><button data-nav="${backToResult()}">← 返回</button><span>·</span><span>器具 · 示意目录</span></div>
+    <div class="eyebrow">器具分类</div>
+    <h2 class="mt2">按习惯找器具</h2>
+    <div class="list">${rows}</div>
+    <div class="disclaimer">${esc(DEMAND_NOTE)}</div>
+  `);
+}
+function screenEquipCat(id){
+  const c = EQUIPCAT_BY_ID[id]; if(!c) return screenEquipCats();
+  track('view_equip_cat', {cat:id, label:c.label});
+  const rows = c.items.map(it=>`<div class="item">
+    <div class="nm">${esc(it.name)}</div>
+    <div class="note">${esc(it.note)}</div>
+    <div class="meta"><button class="nav-link" data-intent="equip" data-target="${esc(it.name)}">想试 →</button></div>
+  </div>`).join('');
+  render(`
+    <div class="crumb"><button data-nav="${backToResult()}">← 返回</button><span>·</span>
+      <button data-nav="cats/equip">器具分类</button><span>·</span><span>${esc(c.label)}</span></div>
+    <div class="eyebrow">器具 · 示意目录</div>
+    <h2 class="mt2">${esc(c.label)}</h2>
+    <p class="muted mt1">${esc(c.blurb)}</p>
+    <div class="list">${rows}</div>
+    <div class="disclaimer">${esc(DEMAND_NOTE)}</div>
+  `);
+}
+function screenRoasters(){
+  track('view_roasters');
+  const row = r=>`<div class="item">
+    <div class="nm">${esc(r.name)}${r.city?` · <span class="faint" style="font-family:var(--sans)">${esc(r.city)}</span>`:''}</div>
+    <div class="note">${esc(r.style||r.intro)}</div>
+    <div class="meta"><button class="nav-link" data-nav="roaster/${r.id}">看看这家 →</button></div>
+  </div>`;
+  render(`
+    <div class="crumb"><button data-nav="${backToResult()}">← 返回</button><span>·</span><span>烘焙商 · 示意目录</span></div>
+    <div class="eyebrow">烘焙商 · 示意目录</div>
+    <h2 class="mt2">做豆子的人</h2>
+    <p class="muted mt1">都是示意（虚构占位），分布在全国各地，用来演示口味分类与豆款怎么导航。</p>
+    <div class="list">${ROASTERS.map(row).join('')}</div>
+    <div class="disclaimer">${esc(DEMAND_NOTE)}</div>
+  `);
+}
+function screenRoaster(id){
+  const r = ROASTER_BY_ID[id]; if(!r) return screenRoasters();
+  track('view_roaster', {roaster:id, name:r.name});
+  const beans = [];
+  BEAN_CATS.forEach(c=>c.beans.forEach(b=>{ if(b.roasterId===id) beans.push({b, cat:c}); }));
+  const beanRows = beans.map(x=>`<div class="item">
+    <div class="nm">${esc(x.b.name)}</div>
+    <div class="note">${esc(x.b.note)}</div>
+    <div class="meta"><button class="tag-link" data-nav="cat/bean/${x.cat.id}">${esc(x.cat.label)} →</button>
+      <button class="nav-link" data-intent="bean" data-target="${esc(x.b.name)}" data-roaster="${esc(id)}">想喝这支 →</button></div>
+  </div>`).join('');
+  const beansBlock = beans.length
+    ? `<div class="roaster-beans"><div class="eyebrow">他们的豆子</div><div class="list">${beanRows}</div></div>`
+    : `<p class="faint mt2">示意占位：上线对接后在此展示这家的在售豆款。</p>`;
+  const meta = [r.city, r.style].filter(Boolean).map(esc).join(' · ');
+  render(`
+    <div class="crumb"><button data-nav="${backToResult()}">← 返回</button><span>·</span>
+      <button data-nav="roasters">烘焙商</button><span>·</span><span>示意</span></div>
+    <div class="eyebrow">烘焙商 · 示意</div>
+    <h2 class="mt2">${esc(r.name)}</h2>
+    ${meta?`<p class="faint">${meta}</p>`:''}
+    <p class="muted mt2">${esc(r.intro)}</p>
+    <button class="nav-link mt2" data-intent="roaster" data-target="${esc(r.name)}">想认识这家 →</button>
+    ${beansBlock}
+    <div class="disclaimer">${esc(DEMAND_NOTE)}</div>
+  `);
+}
+function screenCafes(highlight){
+  track('view_cafes', {highlight:highlight||""});
+  const keys = Object.keys(CAFE_VIBES);
+  const order = (highlight && CAFE_VIBES[highlight]) ? [highlight].concat(keys.filter(k=>k!==highlight)) : keys;
+  const sections = order.map(v=>{
+    const list = CAFES.filter(c=>c.vibe===v);
+    if(!list.length) return "";
+    const rows = list.map(c=>`<div class="item">
+      <div class="nm">${esc(c.name)} · <span class="faint" style="font-family:var(--sans)">${esc(c.city)}</span></div>
+      <div class="note">${esc(c.tag||c.intro)}</div>
+      <div class="meta"><button class="nav-link" data-nav="cafe/${c.id}">认识这家店 →</button></div>
+    </div>`).join('');
+    const mark = (v===highlight) ? ` <span class="qtier">为你而选</span>` : '';
+    return `<div class="mt3"><div class="eyebrow">${esc(CAFE_VIBES[v].label)}${mark}</div>
+      <p class="muted mt1">${esc(CAFE_VIBES[v].blurb)}</p>
+      <div class="list">${rows}</div></div>`;
+  }).join('');
+  render(`
+    <div class="crumb"><button data-nav="${backToResult()}">← 返回</button><span>·</span><span>咖啡店 · 示意目录</span></div>
+    <div class="eyebrow">咖啡店</div>
+    <h2 class="mt2">按气质找个地方坐下</h2>
+    <p class="muted mt1">都是示意（虚构占位），按门店气质分了类、分布在全国各地。点「想去坐坐」我们替你记下，但不带你去导航购买。</p>
+    ${sections}
+    <div class="disclaimer">${esc(DEMAND_NOTE)}</div>
+  `);
+}
+function screenCafe(id){
+  const c = CAFE_BY_ID[id]; if(!c) return screenCafes();
+  track('view_cafe', {cafe:id, name:c.name});
+  const vibeLabel = (CAFE_VIBES[c.vibe]||{}).label || "";
+  const meta = [c.city, vibeLabel].filter(Boolean).map(esc).join(' · ');
+  render(`
+    <div class="crumb"><button data-nav="${backToResult()}">← 返回</button><span>·</span>
+      <button data-nav="cafes">咖啡店</button><span>·</span><span>${esc(c.name)}</span></div>
+    <div class="eyebrow">咖啡店 · 示意</div>
+    <h2 class="mt2">${esc(c.name)}</h2>
+    ${meta?`<p class="faint">${meta}</p>`:''}
+    <p class="muted mt2">${esc(c.intro)}</p>
+    <button class="nav-link mt2" data-intent="cafe" data-target="${esc(c.name)}">想去坐坐 →</button>
+    <div class="disclaimer">${esc(DEMAND_NOTE)}</div>
+  `);
+}
+
+/* ---- 本机数据看板：访问 #stats（真实聚合请看 GA4）---- */
+function screenStats(){
+  let ev=[]; try{ ev=JSON.parse(localStorage.getItem('cti_events')||"[]"); }catch(e){}
+  const c=n=>ev.filter(e=>e.ev===n).length;
+  const starts=c('quiz_start'), done=c('quiz_complete');
+  const compRate = starts? Math.round(done/starts*100):0;
+  const dist={}; ev.filter(e=>e.ev==='quiz_complete').forEach(e=>{const k=e.props.type_name||e.props.type;dist[k]=(dist[k]||0)+1;});
+  const distRows=Object.entries(dist).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<tr><td>${esc(k)}</td><td class="n">${v}</td></tr>`).join('')||`<tr><td class="muted">暂无</td><td class="n">0</td></tr>`;
+  const demand={}; ev.filter(e=>e.ev==='intent').forEach(e=>{const k=(e.props.kind||'?')+' · '+(e.props.target||'');demand[k]=(demand[k]||0)+1;});
+  const demandRows=Object.entries(demand).sort((a,b)=>b[1]-a[1]).slice(0,20).map(([k,v])=>`<tr><td>${esc(k)}</td><td class="n">${v}</td></tr>`).join('')||`<tr><td class="muted">暂无</td><td class="n">0</td></tr>`;
+  const roasterClk=ev.filter(e=>e.ev==='intent'&&e.props.kind==='roaster').length;
+  const beanClk=ev.filter(e=>e.ev==='intent'&&e.props.kind==='bean').length;
+  const cafeClk=ev.filter(e=>e.ev==='intent'&&e.props.kind==='cafe').length;
+  render(`
+    <div class="eyebrow">CoffeeTI · 本机演示数据</div>
+    <h2 class="mt2">漏斗与意愿</h2>
+    <p class="faint mt1">仅本设备 localStorage 统计，用于自测；真实访客聚合请在 GA4 后台看。</p>
+    <table>
+      <tr><th>指标</th><th style="text-align:right">数值</th></tr>
+      <tr><td>开始测试</td><td class="n">${starts}</td></tr>
+      <tr><td>完成测试</td><td class="n">${done}</td></tr>
+      <tr><td>完成率</td><td class="n">${compRate}%</td></tr>
+      <tr><td>想喝某支豆（购买意愿 · 非去重）</td><td class="n">${beanClk}</td></tr>
+      <tr><td>想认识某烘焙商</td><td class="n">${roasterClk}</td></tr>
+      <tr><td>想去某咖啡店</td><td class="n">${cafeClk}</td></tr>
+      <tr><td>分享点击</td><td class="n">${c('share_click')}</td></tr>
+      <tr><td>留资邮箱（最强需求信号）</td><td class="n">${c('waitlist_submit')}</td></tr>
+    </table>
+    <h2 class="mt3" style="font-size:1.3rem">被想要、但我们还没对接的（谈判资产）</h2>
+    <p class="faint mt1">点了「想喝/想认识/想去」却被我们刻意留住、没放走的需求——这正是能拿去跟烘焙商谈的「现成买家」。</p>
+    <table><tr><th>对象</th><th style="text-align:right">想要次数</th></tr>${demandRows}</table>
+    <h2 class="mt3" style="font-size:1.3rem">人格分布</h2>
+    <table><tr><th>人格</th><th style="text-align:right">人次</th></tr>${distRows}</table>
+    <div class="actions">
+      <button class="ghost" data-nav="">← 回到测试</button>
+      <button class="ghost" id="clear">清空本机数据</button>
+    </div>
+  `);
+  document.getElementById('clear').onclick=()=>{ if(confirm('清空本机演示数据？')){ localStorage.removeItem('cti_events'); screenStats(); } };
+}
+
+/* ---- 路由 ---- */
+function route(){
+  const h = location.hash.replace(/^#/,'');
+  if(h==='') return screenIntro();
+  if(h==='result'){
+    if(state.result) return screenResult();
+    try{ history.replaceState(null,'','#'); }catch(e){}
+    return screenIntro();
+  }
+  if(h==='quiz') return (state.qset.length && state.qi<state.qset.length && !state.result) ? screenQuestion() : screenIntro();
+  if(h==='stats') return screenStats();
+  if(h==='roasters') return screenRoasters();
+  if(h==='cafes') return screenCafes();
+  if(h==='cats/bean') return screenBeanCats();
+  if(h==='cats/equip') return screenEquipCats();
+  const m = h.split('/');
+  if(m[0]==='cat' && m[1]==='bean') return screenBeanCat(m[2]);
+  if(m[0]==='cat' && m[1]==='equip') return screenEquipCat(m[2]);
+  if(m[0]==='roaster') return screenRoaster(m[1]);
+  if(m[0]==='cafes') return screenCafes(m[1]);
+  if(m[0]==='cafe') return screenCafe(m[1]);
+  return screenIntro();
+}
+window.addEventListener('hashchange', route);
+route();
+</script>
+</body>
+</html>
